@@ -1,34 +1,4 @@
-
-import streamlit as st
-
-# Kode sakti untuk full screen & tanpa atribut Streamlit
-hide_st_style = """
-            <style>
-            /* Menghilangkan Main Menu (tiga garis di kanan atas) */
-            #MainMenu {visibility: hidden;}
-            
-            /* Menghilangkan Header transparan bawaan */
-            header {visibility: hidden;}
-            
-            /* Menghilangkan Footer "Made with Streamlit" */
-            footer {visibility: hidden;}
-            
-            /* Menghilangkan tombol 'Deploy' di versi terbaru */
-            .stAppDeployButton {display:none;}
-
-            /* MENGHILANGKAN JARAK PUTIH DI ATAS (Sangat Penting) */
-            .block-container {
-                padding-top: 0rem !important;
-                padding-bottom: 0rem !important;
-            }
-            
-            /* Menghilangkan status bar saat proses running */
-            [data-testid="stStatusWidget"] {display:none;}
-            </style>
-            """
-st.markdown(hide_st_style, unsafe_allow_html=True)
-
-# app.py - ARKI ESTIMATOR PRO (MODERN WHITE DESIGN)
+# app.py - ARKIDIGITAL ESTIMATOR PRO (PRECISION 20 COMPONENTS)
 
 import streamlit as st
 import math
@@ -38,7 +8,7 @@ import json
 
 # ==================== KONFIGURASI ====================
 st.set_page_config(
-    page_title="ARKI ESTIMATOR PRO",
+    page_title="ARKIDIGITAL ESTIMATOR PRO",
     page_icon="🏗️",
     layout="wide",
     initial_sidebar_state="collapsed"
@@ -59,22 +29,43 @@ st.markdown("""
         background-color: #ffffff !important;
     }
     
-    /* Header utama */
+    /* Header utama dengan logo */
     .hero-header {
         background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
-        padding: 28px 32px;
+        padding: 20px 32px;
         border-radius: 20px;
         margin-bottom: 30px;
         box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
-    
-    /* Sidebar styled modern */
-    .sidebar-modern {
-        background-color: #f8fafc;
-        border-radius: 20px;
-        padding: 20px;
-        margin-bottom: 20px;
-        border: 1px solid #e2e8f0;
+    .hero-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .logo-icon {
+        font-size: 48px;
+    }
+    .hero-text h1 {
+        color: white !important;
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+    }
+    .hero-text p {
+        color: #dbeafe;
+        margin: 5px 0 0 0;
+        font-size: 13px;
+    }
+    .hero-badge {
+        background: rgba(255,255,255,0.2);
+        padding: 8px 16px;
+        border-radius: 30px;
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
     }
     
     /* Cards untuk metrics */
@@ -84,54 +75,103 @@ st.markdown("""
         padding: 20px;
         text-align: center;
         border: 1px solid #bfdbfe;
-        transition: transform 0.2s;
+        transition: transform 0.2s, box-shadow 0.2s;
     }
     .metric-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
     }
     
-    /* Tabel Modern */
-    .modern-table {
-        width: 100%;
-        border-collapse: collapse;
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    }
-    .modern-table th {
-        background-color: #1e40af;
-        color: white;
-        padding: 12px 16px;
-        font-weight: 600;
-        font-size: 13px;
-    }
-    .modern-table td {
-        padding: 12px 16px;
-        border-bottom: 1px solid #e2e8f0;
-        color: #1e293b;
-        font-size: 13px;
-    }
-    .modern-table tr:hover td {
-        background-color: #f1f5f9;
-    }
-    
-    /* Expander modern */
-    .streamlit-expanderHeader {
-        background-color: #f8fafc;
-        border-radius: 12px;
+    /* Komponen Card */
+    .component-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 0;
+        margin-bottom: 20px;
         border: 1px solid #e2e8f0;
-        font-weight: 600;
-        color: #1e40af;
+        overflow: hidden;
+        transition: all 0.2s;
+    }
+    .component-card:hover {
+        border-color: #bfdbfe;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .component-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        padding: 14px 20px;
+        border-bottom: 1px solid #e2e8f0;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .component-num {
+        background: #1e40af;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .component-title {
+        font-weight: 700;
+        color: #1e293b;
+        font-size: 16px;
+    }
+    .component-body {
+        padding: 16px 20px;
+        background: white;
     }
     
-    /* Divider */
+    /* Grid untuk detail komponen */
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+    }
+    .detail-item {
+        background: #f8fafc;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border-left: 3px solid #2563eb;
+    }
+    .detail-label {
+        font-size: 11px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .detail-value {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+    
+    /* Custom divider */
     .custom-divider {
         height: 2px;
         background: linear-gradient(90deg, #2563eb, #93c5fd, #2563eb);
         margin: 20px 0;
         border-radius: 2px;
+    }
+    
+    /* Button styling */
+    .stButton button {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .stButton button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
     }
     
     /* Input styling */
@@ -140,674 +180,906 @@ st.markdown("""
         border: 1px solid #cbd5e1 !important;
     }
     
-    /* Title */
-    h1, h2, h3 {
-        color: #1e293b !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Expander content */
-    .streamlit-expanderContent {
-        background-color: #ffffff;
-        border: 1px solid #e2e8f0;
-        border-top: none;
-        border-radius: 0 0 12px 12px;
+    /* Grand Total */
+    .grand-total {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        border-radius: 20px;
+        padding: 30px;
+        text-align: center;
+        margin-top: 30px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ==================== HEADER ====================
+# ==================== HEADER WITH LOGO ====================
 st.markdown("""
 <div class="hero-header">
-    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 700;">🏗️ ARKI ESTIMATOR PRO</h1>
-    <p style="color: #dbeafe; margin: 8px 0 0 0; font-size: 14px;">Kalkulator Konstruksi Presisi | 20 Komponen Lengkap</p>
+    <div class="hero-left">
+        <div class="logo-icon">🏗️</div>
+        <div class="hero-text">
+            <h1>ARKIDIGITAL ESTIMATOR PRO</h1>
+            <p>Aplikasi Hitung Cepat Kebutuhan Material Bangunan | Presisi 20 Komponen</p>
+        </div>
+    </div>
+    <div class="hero-badge">PREMIUM CALCULATOR</div>
 </div>
 """, unsafe_allow_html=True)
 
-# ==================== SIDEBAR INPUT DI DASHBOARD UTAMA ====================
+# ==================== SESSION STATE UNTUK TOMBOL HITUNG ====================
+if 'hitung' not in st.session_state:
+    st.session_state.hitung = False
+
+def proses_perhitungan():
+    st.session_state.hitung = True
+
+# ==================== FORM INPUT DATA ====================
 st.markdown("### 📐 Input Data Proyek")
 
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.markdown("**🏠 Dimensi Bangunan**")
-    panjang = st.number_input("Panjang (m)", min_value=5.0, max_value=50.0, value=10.0, step=0.5, key="panjang")
-    lebar = st.number_input("Lebar (m)", min_value=5.0, max_value=50.0, value=8.0, step=0.5, key="lebar")
-    tinggi = st.number_input("Tinggi Dinding (m)", min_value=2.5, max_value=5.0, value=3.5, step=0.1, key="tinggi")
-    lantai = st.select_slider("Jumlah Lantai", options=[1, 2, 3, 4, 5], value=1, key="lantai")
-
-with col2:
-    st.markdown("**🛏️ Ruangan**")
-    kamar = st.number_input("Kamar Tidur", min_value=0, max_value=10, value=3, step=1, key="kamar")
-    km = st.number_input("Kamar Mandi", min_value=0, max_value=5, value=2, step=1, key="km")
-    ruang_tamu = st.number_input("Ruang Tamu", min_value=0, max_value=3, value=1, step=1, key="ruang_tamu")
-    dapur = st.number_input("Dapur", min_value=0, max_value=2, value=1, step=1, key="dapur")
-
-with col3:
-    st.markdown("**🔧 Material & Spek**")
-    jenis_atap = st.selectbox("Jenis Atap", ["metal", "tanah", "beton"], 
-                               format_func=lambda x: "Metal" if x=="metal" else "Tanah" if x=="tanah" else "Beton", key="atap")
-    rangka_atap = st.selectbox("Rangka Atap", ["baja", "kayu"],
-                                format_func=lambda x: "Baja Ringan" if x=="baja" else "Kayu", key="rangka")
-    jenis_bata = st.selectbox("Jenis Bata", ["merah", "hebel"],
-                               format_func=lambda x: "Bata Merah" if x=="merah" else "Bata Ringan", key="bata")
-    ukuran_besi = st.selectbox("Ukuran Besi", [10, 13, 16], format_func=lambda x: f"Ø{x} mm", key="besi")
-
-with col4:
-    st.markdown("**👷 Tenaga & Opsional**")
-    upah_tukang = st.number_input("Upah Tukang/Hari", min_value=50000, max_value=500000, value=150000, step=10000, key="upah_tukang")
-    upah_kenek = st.number_input("Upah Kenek/Hari", min_value=50000, max_value=500000, value=100000, step=10000, key="upah_kenek")
-    garasi = st.number_input("Garasi", min_value=0, max_value=2, value=0, step=1, key="garasi")
-    kanopi = st.number_input("Kanopi (m²)", min_value=0, max_value=100, value=0, step=1, key="kanopi")
-    pagar = st.number_input("Pagar (m)", min_value=0, max_value=100, value=0, step=1, key="pagar")
-
-st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-
-# ==================== FUNGSI PERHITUNGAN ====================
-
-def hitung_cakar_ayam(panjang, lebar, lantai, ukuran_besi):
-    if lantai == 1:
-        kp = math.ceil(panjang / 5.5) + 1
-        kl = math.ceil(lebar / 5.5) + 1
-        jumlah_titik = kp * kl
-        ukuran = 0.5
-        tebal = 0.2
-        jarak = "5-6 meter (penghematan)"
-    elif lantai == 2:
-        kp = math.floor(panjang / 3) + 1
-        kl = math.floor(lebar / 3) + 1
-        jumlah_titik = kp * kl
-        ukuran = 0.7
-        tebal = 0.25
-        jarak = "3 meter (wajib)"
-    else:
-        kp = math.floor(panjang / 3) + 1
-        kl = math.floor(lebar / 3) + 1
-        jumlah_titik = kp * kl
-        ukuran = 0.9
-        tebal = 0.3
-        jarak = "3 meter"
+with st.form("input_form"):
+    col1, col2, col3, col4 = st.columns(4)
     
-    volume_per_titik = ukuran * ukuran * tebal
-    volume_total = jumlah_titik * volume_per_titik
+    with col1:
+        st.markdown("**🏠 Dimensi Bangunan**")
+        panjang = st.number_input("Panjang (m)", min_value=5.0, max_value=50.0, value=10.0, step=0.5)
+        lebar = st.number_input("Lebar (m)", min_value=5.0, max_value=50.0, value=8.0, step=0.5)
+        tinggi = st.number_input("Tinggi Dinding (m)", min_value=2.5, max_value=5.0, value=3.5, step=0.1)
+        lantai = st.select_slider("Jumlah Lantai", options=[1, 2, 3], value=1)
+    
+    with col2:
+        st.markdown("**🛏️ Ruangan**")
+        kamar = st.number_input("Kamar Tidur", min_value=1, max_value=10, value=3, step=1)
+        km = st.number_input("Kamar Mandi", min_value=1, max_value=5, value=2, step=1)
+        ruang_tamu = st.number_input("Ruang Tamu", min_value=0, max_value=3, value=1, step=1)
+        dapur = st.number_input("Dapur", min_value=0, max_value=2, value=1, step=1)
+    
+    with col3:
+        st.markdown("**🔧 Material & Spek**")
+        jenis_atap = st.selectbox("Jenis Atap", ["metal", "tanah", "beton"], 
+                                   format_func=lambda x: "Metal" if x=="metal" else "Tanah" if x=="tanah" else "Beton")
+        rangka_atap = st.selectbox("Rangka Atap", ["baja", "kayu"],
+                                    format_func=lambda x: "Baja Ringan" if x=="baja" else "Kayu")
+        jenis_bata = st.selectbox("Jenis Bata", ["merah", "hebel"],
+                                   format_func=lambda x: "Bata Merah" if x=="merah" else "Bata Ringan")
+        ukuran_besi = st.selectbox("Ukuran Besi Utama", [10, 13, 16], format_func=lambda x: f"Ø{x} mm")
+    
+    with col4:
+        st.markdown("**👷 Tenaga & Opsional**")
+        upah_tukang = st.number_input("Upah Tukang/Hari", min_value=50000, max_value=500000, value=150000, step=10000)
+        upah_kenek = st.number_input("Upah Kenek/Hari", min_value=50000, max_value=500000, value=100000, step=10000)
+        garasi = st.number_input("Garasi", min_value=0, max_value=2, value=0, step=1)
+        kanopi = st.number_input("Kanopi (m²)", min_value=0, max_value=100, value=0, step=1)
+        pagar = st.number_input("Pagar (m)", min_value=0, max_value=100, value=0, step=1)
+    
+    # Tombol Submit
+    col_button = st.columns([1, 2, 1])
+    with col_button[1]:
+        submitted = st.form_submit_button("🔨 HITUNG KEBUTUHAN", use_container_width=True, on_click=proses_perhitungan)
+
+# ==================== FUNGSI PERHITUNGAN PRESISI ====================
+
+def hitung_cakar_ayam(p, l, lt, ukuran_besi):
+    """Perhitungan cakar ayam presisi"""
+    if lt == 1:
+        kp = math.ceil(p / 5.0) + 1
+        kl = math.ceil(l / 5.0) + 1
+        jumlah = kp * kl
+        ukuran = 0.6
+        tebal = 0.25
+        jarak = "5 meter (standar rumah 1 lantai)"
+    elif lt == 2:
+        kp = math.ceil(p / 3.5) + 1
+        kl = math.ceil(l / 3.5) + 1
+        jumlah = kp * kl
+        ukuran = 0.8
+        tebal = 0.30
+        jarak = "3.5 meter (standar rumah 2 lantai)"
+    else:
+        kp = math.ceil(p / 3.0) + 1
+        kl = math.ceil(l / 3.0) + 1
+        jumlah = kp * kl
+        ukuran = 1.0
+        tebal = 0.35
+        jarak = "3 meter (rumah 3+ lantai)"
+    
+    vol_per_titik = ukuran * ukuran * tebal
+    vol_total = jumlah * vol_per_titik
     berat_per_meter = (ukuran_besi * ukuran_besi) / 162
-    panjang_besi_per_titik = (ukuran * 4) * 10
-    berat_besi = (panjang_besi_per_titik * jumlah_titik) * berat_per_meter
-    batang_besi = math.ceil((panjang_besi_per_titik * jumlah_titik) / 12)
+    panjang_besi_per_titik = (ukuran * 4) * 8
+    berat_besi = (panjang_besi_per_titik * jumlah) * berat_per_meter
+    batang_besi = math.ceil((panjang_besi_per_titik * jumlah) / 12)
     
     return {
-        'jumlah_titik': jumlah_titik, 'jarak': jarak,
-        'ukuran_cm': ukuran * 100, 'tebal_cm': tebal * 100,
-        'volume_m3': round(volume_total, 2),
-        'semen_sak': math.ceil(volume_total * 8),
-        'pasir_m3': round(volume_total * 0.65, 2),
-        'split_m3': round(volume_total * 0.85, 2),
+        'jumlah': jumlah, 'jarak': jarak, 'ukuran_cm': ukuran * 100,
+        'tebal_cm': tebal * 100, 'volume': round(vol_total, 2),
+        'semen': math.ceil(vol_total * 8.5),
+        'pasir': round(vol_total * 0.7, 2),
+        'split': round(vol_total * 0.9, 2),
         'besi_kg': round(berat_besi, 1),
         'besi_batang': batang_besi
     }
 
 
-def get_layout(panjang, lebar, kamar, km, ruang_tamu, dapur, garasi):
-    layout = []
-    y = 0.5
+def hitung_dinding_presisi(p, l, t, kamar, km, ruang_tamu, dapur, garasi):
+    """Perhitungan dinding presisi tidak double count"""
+    # Panjang dinding luar
+    panjang_dinding_luar = 2 * (p + l)
     
-    if kamar > 0:
-        lebar_kt = (panjang - 1) / kamar if kamar > 0 else 0
-        for i in range(1, kamar + 1):
-            layout.append({'nama': f'KT {i}', 'x': 0.5 + (i-1)*lebar_kt, 'y': y, 'w': lebar_kt, 'h': 3})
+    # Panjang dinding internal (perkiraan berdasarkan ruangan)
+    panjang_internal = (kamar * 3.5) + (km * 2.5) + (ruang_tamu * 3) + (dapur * 3) + (garasi * 2)
     
-    y += 3.2
-    if ruang_tamu > 0:
-        layout.append({'nama': 'Ruang Tamu', 'x': 0.5, 'y': y, 'w': panjang/2, 'h': 3})
-    if dapur > 0:
-        layout.append({'nama': 'Dapur', 'x': panjang/2 + 0.5, 'y': y, 'w': panjang/2 - 1, 'h': 3})
+    total_panjang_dinding = panjang_dinding_luar + panjang_internal
+    luas_kotor = total_panjang_dinding * t
     
-    y += 3.2
-    for i in range(1, km + 1):
-        layout.append({'nama': f'KM {i}', 'x': 0.5 + (i-1)*2.5, 'y': y, 'w': 2, 'h': 2})
-    
-    if garasi > 0:
-        layout.append({'nama': 'Garasi', 'x': panjang - 3.5, 'y': y, 'w': 3, 'h': 2.5})
-    
-    return layout
-
-
-def hitung_dinding_presisi(layout, tinggi):
-    sisi_dihitung = set()
-    total_luas = 0
-    jumlah_pintu = 0
-    jumlah_jendela = 0
-    
-    for r in layout:
-        kiri = r['x']; kanan = r['x'] + r['w']; atas = r['y']; bawah = r['y'] + r['h']
-        
-        sisi_kiri = f"kiri,{kiri},{atas},{bawah}"
-        if sisi_kiri not in sisi_dihitung:
-            total_luas += r['h'] * tinggi
-            sisi_dihitung.add(sisi_kiri)
-        
-        sisi_kanan = f"kanan,{kanan},{atas},{bawah}"
-        if sisi_kanan not in sisi_dihitung:
-            total_luas += r['h'] * tinggi
-            sisi_dihitung.add(sisi_kanan)
-        
-        sisi_atas = f"atas,{atas},{kiri},{kanan}"
-        if sisi_atas not in sisi_dihitung:
-            total_luas += r['w'] * tinggi
-            sisi_dihitung.add(sisi_atas)
-        
-        sisi_bawah = f"bawah,{bawah},{kiri},{kanan}"
-        if sisi_bawah not in sisi_dihitung:
-            total_luas += r['w'] * tinggi
-            sisi_dihitung.add(sisi_bawah)
-        
-        jumlah_pintu += 1
-        if "KM" not in r['nama'] and "Garasi" not in r['nama']:
-            jumlah_jendela += 1
+    # Estimasi bukaan (pintu + jendela)
+    jumlah_pintu = kamar + km + ruang_tamu + (1 if dapur > 0 else 0) + (1 if garasi > 0 else 0)
+    jumlah_jendela = kamar + ruang_tamu + (1 if dapur > 0 else 0)
     
     luas_pintu = jumlah_pintu * (0.9 * 2.1)
     luas_jendela = jumlah_jendela * (1.2 * 1.0)
-    luas_bersih = total_luas - luas_pintu - luas_jendela
+    luas_bersih = luas_kotor - luas_pintu - luas_jendela
+    
+    # Pastikan tidak negatif
+    luas_bersih = max(luas_bersih, luas_kotor * 0.6)
     
     return {
-        'luas_kotor': round(total_luas, 2), 'luas_pintu': round(luas_pintu, 2),
-        'luas_jendela': round(luas_jendela, 2), 'luas_bersih': round(luas_bersih, 2),
-        'jumlah_pintu': jumlah_pintu, 'jumlah_jendela': jumlah_jendela,
-        'bata': math.ceil(luas_bersih * 70),
-        'semen_pasang': math.ceil(luas_bersih * 0.3),
-        'pasir_pasang': round(luas_bersih * 0.04, 2),
-        'semen_plester': math.ceil(luas_bersih * 2 * 0.2),
-        'pasir_plester': round(luas_bersih * 2 * 0.025, 2),
-        'acian': math.ceil(luas_bersih * 2 * 0.15)
+        'luas_kotor': round(luas_kotor, 2),
+        'luas_bersih': round(luas_bersih, 2),
+        'jumlah_pintu': jumlah_pintu,
+        'jumlah_jendela': jumlah_jendela,
+        'luas_pintu': round(luas_pintu, 2),
+        'luas_jendela': round(luas_jendela, 2),
+        'bata_merah': math.ceil(luas_bersih * 70),
+        'bata_hebel': math.ceil(luas_bersih * 8.5),
+        'semen_pasang': math.ceil(luas_bersih * 0.32),
+        'pasir_pasang': round(luas_bersih * 0.045, 2),
+        'semen_plester': math.ceil(luas_bersih * 2 * 0.22),
+        'pasir_plester': round(luas_bersih * 2 * 0.028, 2),
+        'acian': math.ceil(luas_bersih * 2 * 0.18)
     }
 
 
-# ==================== MAIN PERHITUNGAN ====================
-layout = get_layout(panjang, lebar, kamar, km, ruang_tamu, dapur, garasi)
-keliling = 2 * (panjang + lebar)
-luas_bangunan = panjang * lebar
-luas_total = luas_bangunan * lantai
-
-# KOMPONEN 1: PONDASI
-vol_pondasi = keliling * 0.6 * 0.8
-komponen_pondasi = {
-    'volume': round(vol_pondasi, 2),
-    'batu_belah': round(vol_pondasi * 1.2, 2),
-    'semen': math.ceil(vol_pondasi * 4.5),
-    'pasir': round(vol_pondasi * 0.55, 2)
-}
-
-# KOMPONEN 2: SLOOF
-vol_sloof = keliling * 0.2 * 0.25
-komponen_sloof = {
-    'volume': round(vol_sloof, 2),
-    'semen': math.ceil(vol_sloof * 8),
-    'pasir': round(vol_sloof * 0.65, 2),
-    'split': round(vol_sloof * 0.85, 2),
-    'besi_kg': round(vol_sloof * 120, 1)
-}
-
-# KOMPONEN 3: RING BALOK
-vol_ring = keliling * 0.15 * 0.2
-komponen_ring = {
-    'volume': round(vol_ring, 2),
-    'semen': math.ceil(vol_ring * 8),
-    'pasir': round(vol_ring * 0.65, 2),
-    'split': round(vol_ring * 0.85, 2),
-    'besi_kg': round(vol_ring * 120, 1)
-}
-
-# KOMPONEN 4: TOTAL STRUKTUR
-faktor = 1.3 if (lantai > 1 or jenis_atap != 'metal') else 1
-total_beton = (vol_sloof + vol_ring) * faktor
-komponen_struktur = {
-    'beton': round(total_beton, 2),
-    'semen': math.ceil(total_beton * 8),
-    'pasir': round(total_beton * 0.65, 2),
-    'split': round(total_beton * 0.85, 2),
-    'besi_kg': round(total_beton * 120, 1),
-    'besi_batang': math.ceil((total_beton * 120) / (12 * (13*13/162))) if total_beton > 0 else 0
-}
-
-# KOMPONEN 5: BEKISTING
-luas_bekisting = (vol_sloof * 8) + (vol_ring * 6)
-komponen_bekisting = {
-    'triplek': math.ceil(luas_bekisting * 0.35),
-    'kaso': math.ceil(luas_bekisting * 2.5),
-    'paku': round(luas_bekisting * 0.2, 1)
-}
-
-# KOMPONEN 6: CAKAR AYAM
-cakar = hitung_cakar_ayam(panjang, lebar, lantai, ukuran_besi)
-
-# KOMPONEN 7: DINDING
-dinding = hitung_dinding_presisi(layout, tinggi)
-
-# KOMPONEN 8: ATAP
-luas_atap = luas_bangunan * 1.3
-genteng_per_m2 = {'metal': 16, 'tanah': 28, 'beton': 10}
-genteng = math.ceil(luas_atap * genteng_per_m2[jenis_atap])
-
-# KOMPONEN 9: RANGKA ATAP
-if rangka_atap == 'baja':
-    komponen_rangka = {
-        'jenis': 'Baja Ringan',
-        'kanal_c': math.ceil(luas_atap * 4.5) if luas_atap > 0 else 0,
-        'reng': math.ceil(luas_atap * 2.5) if luas_atap > 0 else 0,
-        'sekrup': math.ceil(luas_atap * 12) if luas_atap > 0 else 0
+# ==================== PROSES PERHITUNGAN ====================
+if st.session_state.hitung:
+    
+    # Variabel dasar
+    luas_bangunan = panjang * lebar
+    luas_total = luas_bangunan * lantai
+    keliling = 2 * (panjang + lebar)
+    
+    # ========== KOMPONEN 1: PONDASI BATU KALI ==========
+    vol_pondasi = keliling * 0.7 * 0.8
+    pondasi = {
+        'volume': round(vol_pondasi, 2),
+        'batu_belah': round(vol_pondasi * 1.25, 2),
+        'semen': math.ceil(vol_pondasi * 4.8),
+        'pasir': round(vol_pondasi * 0.6, 2)
     }
-else:
-    komponen_rangka = {
-        'jenis': 'Kayu',
-        'kuda2': math.ceil(panjang / 1.5) * 4 if panjang > 0 else 0,
-        'gording': math.ceil(panjang * 3) if panjang > 0 else 0,
-        'reng': math.ceil(luas_atap * 1.5) if luas_atap > 0 else 0
+    
+    # ========== KOMPONEN 2: SLOOF ==========
+    vol_sloof = keliling * 0.2 * 0.25
+    sloof = {
+        'volume': round(vol_sloof, 2),
+        'semen': math.ceil(vol_sloof * 8.5),
+        'pasir': round(vol_sloof * 0.7, 2),
+        'split': round(vol_sloof * 0.9, 2),
+        'besi_kg': round(vol_sloof * 130, 1)
     }
-
-# KOMPONEN 10: PLAFON
-komponen_plafon = {
-    'gypsum': math.ceil(luas_bangunan * 0.35) if luas_bangunan > 0 else 0,
-    'hollow': math.ceil(luas_bangunan * 0.8) if luas_bangunan > 0 else 0,
-    'list': math.ceil(keliling * 1.2) if keliling > 0 else 0
-}
-
-# KOMPONEN 11: KERAMIK
-komponen_keramik = {
-    'lantai': math.ceil(luas_bangunan * 1.05) if luas_bangunan > 0 else 0,
-    'dinding_km': km * 6,
-    'semen': math.ceil((luas_bangunan + km*6) * 0.3) if luas_bangunan > 0 else 0,
-    'pasir': round((luas_bangunan + km*6) * 0.03, 2) if luas_bangunan > 0 else 0
-}
-
-# KOMPONEN 12: LISTRIK
-titik_lampu = len(layout) + 3
-komponen_listrik = {
-    'lampu': titik_lampu,
-    'saklar': math.ceil(titik_lampu * 0.7),
-    'kabel': titik_lampu * 8,
-    'mcb': 6 if lantai >= 2 else 4
-}
-
-# KOMPONEN 13: KAMAR MANDI
-komponen_km = {'closet': km, 'pipa': km * 8, 'wastafel': km}
-
-# KOMPONEN 14: DAPUR
-komponen_dapur = {'kitchen_set': 1 if dapur > 0 else 0}
-
-# KOMPONEN 15: CAT
-komponen_cat = {
-    'tembok': math.ceil(dinding['luas_bersih'] * 0.12) if dinding['luas_bersih'] > 0 else 0,
-    'plafon': math.ceil(luas_bangunan * 0.1) if luas_bangunan > 0 else 0,
-    'total': math.ceil((dinding['luas_bersih'] * 0.12) + (luas_bangunan * 0.1)) if dinding['luas_bersih'] > 0 else 0
-}
-
-# KOMPONEN 16: TENAGA KERJA
-tukang = max(2, math.ceil(luas_total / 25)) if luas_total > 0 else 2
-kenek = math.ceil(tukang * 1.2) if luas_total > 0 else 2
-hari = max(25, math.ceil(luas_total / 3)) if luas_total > 0 else 25
-komponen_tenaga = {
-    'tukang': tukang,
-    'kenek': kenek,
-    'hari': hari,
-    'biaya': (tukang * upah_tukang + kenek * upah_kenek) * hari if luas_total > 0 else 0
-}
-
-# KOMPONEN 17: PINTU
-komponen_pintu = {'jumlah': dinding['jumlah_pintu'], 'biaya': dinding['jumlah_pintu'] * 500000}
-
-# KOMPONEN 18: JENDELA
-komponen_jendela = {'jumlah': dinding['jumlah_jendela'], 'biaya': dinding['jumlah_jendela'] * 300000}
-
-# KOMPONEN 19: OPSIONAL - KANOPI
-komponen_kanopi = {'luas': kanopi, 'biaya': kanopi * 350000}
-
-# KOMPONEN 20: OPSIONAL - PAGAR
-komponen_pagar = {'panjang': pagar, 'biaya': pagar * 850000}
-
-# TOTAL REKAP
-total_semen = (komponen_pondasi['semen'] + komponen_struktur['semen'] + 
-               cakar['semen_sak'] + dinding['semen_pasang'] + 
-               dinding['semen_plester'] + komponen_keramik['semen'])
-total_pasir = (komponen_pondasi['pasir'] + komponen_struktur['pasir'] + 
-               cakar['pasir_m3'] + dinding['pasir_pasang'] + 
-               dinding['pasir_plester'] + komponen_keramik['pasir'])
-total_split = komponen_struktur['split'] + cakar['split_m3']
-total_besi = komponen_struktur['besi_kg'] + cakar['besi_kg']
-
-# TOTAL BIAYA
-harga = {
-    'semen': 65000, 'pasir': 300000, 'split': 320000, 'bata': 800, 'besi': 15000,
-    'triplek': 180000, 'kaso': 25000, 'paku': 18000, 'genteng_metal': 25000,
-    'genteng_tanah': 5000, 'genteng_beton': 12000, 'keramik': 90000, 'batu_belah': 250000,
-    'gypsum': 45000, 'hollow': 35000, 'list': 8000, 'kabel': 15000, 'saklar': 25000,
-    'lampu': 45000, 'mcb': 75000, 'pintu': 500000, 'closet': 800000, 'pipa': 50000,
-    'wastafel': 300000, 'cat': 35000, 'kitchen_set': 3000000, 'kanopi': 350000, 'pagar': 850000
-}
-
-total_biaya = (total_semen * harga['semen']) + \
-              (total_pasir * harga['pasir']) + \
-              (total_split * harga['split']) + \
-              (komponen_pondasi['batu_belah'] * harga['batu_belah']) + \
-              (total_besi * harga['besi']) + \
-              (komponen_bekisting['triplek'] * harga['triplek']) + \
-              (komponen_bekisting['kaso'] * harga['kaso']) + \
-              (komponen_bekisting['paku'] * harga['paku']) + \
-              (dinding['bata'] * harga['bata']) + \
-              (genteng * harga[f'genteng_{jenis_atap}']) + \
-              ((komponen_keramik['lantai'] + komponen_keramik['dinding_km']) * harga['keramik']) + \
-              (komponen_plafon['gypsum'] * harga['gypsum']) + \
-              (komponen_plafon['hollow'] * harga['hollow']) + \
-              (komponen_plafon['list'] * harga['list']) + \
-              (komponen_listrik['lampu'] * harga['lampu']) + \
-              (komponen_listrik['saklar'] * harga['saklar']) + \
-              (komponen_listrik['kabel'] * harga['kabel']) + \
-              (komponen_listrik['mcb'] * harga['mcb']) + \
-              (dinding['jumlah_pintu'] * harga['pintu']) + \
-              (km * harga['closet']) + (km*8 * harga['pipa']) + (km * harga['wastafel']) + \
-              (komponen_cat['total'] * harga['cat']) + \
-              (komponen_dapur['kitchen_set'] * harga['kitchen_set']) + \
-              (kanopi * harga['kanopi']) + (pagar * harga['pagar']) + \
-              komponen_tenaga['biaya']
-
-
-# ==================== TAMPILAN METRIK ====================
-st.markdown("### 📊 Ringkasan Proyek")
-
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.markdown(f"""
-    <div class="metric-card">
-        <p style="color:#475569; font-size:13px; margin:0;">🏠 Luas Bangunan</p>
-        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{luas_bangunan} m²</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col2:
-    st.markdown(f"""
-    <div class="metric-card">
-        <p style="color:#475569; font-size:13px; margin:0;">🦶 Cakar Ayam</p>
-        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{cakar['jumlah_titik']} titik</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col3:
-    st.markdown(f"""
-    <div class="metric-card">
-        <p style="color:#475569; font-size:13px; margin:0;">📅 Estimasi Waktu</p>
-        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{hari} hari</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-with col4:
-    st.markdown(f"""
-    <div class="metric-card">
-        <p style="color:#475569; font-size:13px; margin:0;">💰 Total RAB</p>
-        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">Rp {total_biaya:,.0f}</h3>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-
-# ==================== TABEL 20 KOMPONEN ====================
-st.markdown("### 📋 Rincian 20 Komponen")
-
-# Membuat data untuk tabel 20 komponen
-komponen_data = []
-
-# 1. Pondasi Batu Kali
-komponen_data.append({
-    "No": 1, "Komponen": "Pondasi Batu Kali", 
-    "Volume/Satuan": f"{komponen_pondasi['volume']} m³",
-    "Detail Material": f"Batu: {komponen_pondasi['batu_belah']} m³, Semen: {komponen_pondasi['semen']} sak, Pasir: {komponen_pondasi['pasir']} m³",
-    "Estimasi Biaya": f"Rp {komponen_pondasi['semen']*65000 + komponen_pondasi['batu_belah']*250000:,.0f}"
-})
-
-# 2. Sloof
-komponen_data.append({
-    "No": 2, "Komponen": "Sloof (20x25 cm)", 
-    "Volume/Satuan": f"{komponen_sloof['volume']} m³",
-    "Detail Material": f"Semen: {komponen_sloof['semen']} sak, Pasir: {komponen_sloof['pasir']} m³, Split: {komponen_sloof['split']} m³, Besi: {komponen_sloof['besi_kg']} kg",
-    "Estimasi Biaya": f"Rp {komponen_sloof['semen']*65000 + komponen_sloof['besi_kg']*15000:,.0f}"
-})
-
-# 3. Ring Balok
-komponen_data.append({
-    "No": 3, "Komponen": "Ring Balok (15x20 cm)", 
-    "Volume/Satuan": f"{komponen_ring['volume']} m³",
-    "Detail Material": f"Semen: {komponen_ring['semen']} sak, Pasir: {komponen_ring['pasir']} m³, Split: {komponen_ring['split']} m³, Besi: {komponen_ring['besi_kg']} kg",
-    "Estimasi Biaya": f"Rp {komponen_ring['semen']*65000 + komponen_ring['besi_kg']*15000:,.0f}"
-})
-
-# 4. Total Struktur
-komponen_data.append({
-    "No": 4, "Komponen": "Total Struktur Beton", 
-    "Volume/Satuan": f"{komponen_struktur['beton']} m³",
-    "Detail Material": f"Semen: {komponen_struktur['semen']} sak, Besi: {komponen_struktur['besi_kg']} kg ({komponen_struktur['besi_batang']} batang)",
-    "Estimasi Biaya": f"Rp {komponen_struktur['beton']*1500000:,.0f}"
-})
-
-# 5. Bekisting
-komponen_data.append({
-    "No": 5, "Komponen": "Bekisting", 
-    "Volume/Satuan": f"{luas_bekisting:.1f} m²",
-    "Detail Material": f"Triplek: {komponen_bekisting['triplek']} lbr, Kaso: {komponen_bekisting['kaso']} btg, Paku: {komponen_bekisting['paku']} kg",
-    "Estimasi Biaya": f"Rp {komponen_bekisting['triplek']*180000:,.0f}"
-})
-
-# 6. Cakar Ayam
-komponen_data.append({
-    "No": 6, "Komponen": "Cakar Ayam", 
-    "Volume/Satuan": f"{cakar['jumlah_titik']} titik ({cakar['jarak']})",
-    "Detail Material": f"Volume: {cakar['volume_m3']} m³, Semen: {cakar['semen_sak']} sak, Besi: {cakar['besi_kg']} kg",
-    "Estimasi Biaya": f"Rp {cakar['semen_sak']*65000 + cakar['besi_kg']*15000:,.0f}"
-})
-
-# 7. Dinding Bata
-komponen_data.append({
-    "No": 7, "Komponen": "Dinding Bata", 
-    "Volume/Satuan": f"{dinding['luas_bersih']} m²",
-    "Detail Material": f"Bata: {dinding['bata']:,} pcs, Semen: {dinding['semen_pasang']} sak",
-    "Estimasi Biaya": f"Rp {dinding['bata']*800:,.0f}"
-})
-
-# 8. Plesteran & Acian
-komponen_data.append({
-    "No": 8, "Komponen": "Plesteran + Acian", 
-    "Volume/Satuan": f"{dinding['luas_bersih']*2:.0f} m²",
-    "Detail Material": f"Semen Plester: {dinding['semen_plester']} sak, Semen Acian: {dinding['acian']} sak",
-    "Estimasi Biaya": f"Rp {(dinding['semen_plester'] + dinding['acian'])*65000:,.0f}"
-})
-
-# 9. Pintu
-komponen_data.append({
-    "No": 9, "Komponen": "Pintu", 
-    "Volume/Satuan": f"{dinding['jumlah_pintu']} unit",
-    "Detail Material": "Pintu standar + kusen",
-    "Estimasi Biaya": f"Rp {dinding['jumlah_pintu']*500000:,.0f}"
-})
-
-# 10. Jendela
-komponen_data.append({
-    "No": 10, "Komponen": "Jendela", 
-    "Volume/Satuan": f"{dinding['jumlah_jendela']} unit",
-    "Detail Material": "Jendela standar + kusen",
-    "Estimasi Biaya": f"Rp {dinding['jumlah_jendela']*300000:,.0f}"
-})
-
-# 11. Rangka Atap
-komponen_data.append({
-    "No": 11, "Komponen": f"Rangka Atap ({komponen_rangka['jenis']})", 
-    "Volume/Satuan": f"{luas_atap} m²",
-    "Detail Material": f"Luas atap: {luas_atap} m²",
-    "Estimasi Biaya": f"Rp {luas_atap*150000:,.0f}"
-})
-
-# 12. Genteng
-komponen_data.append({
-    "No": 12, "Komponen": f"Genteng {jenis_atap.title()}", 
-    "Volume/Satuan": f"{genteng} pcs",
-    "Detail Material": f"Kebutuhan genteng untuk luas atap {luas_atap} m²",
-    "Estimasi Biaya": f"Rp {genteng*25000:,.0f}"
-})
-
-# 13. Plafon
-komponen_data.append({
-    "No": 13, "Komponen": "Plafon Gypsum", 
-    "Volume/Satuan": f"{komponen_plafon['gypsum']} lbr",
-    "Detail Material": f"Hollow: {komponen_plafon['hollow']} btg, List: {komponen_plafon['list']} m",
-    "Estimasi Biaya": f"Rp {komponen_plafon['gypsum']*45000:,.0f}"
-})
-
-# 14. Keramik
-komponen_data.append({
-    "No": 14, "Komponen": "Keramik Lantai", 
-    "Volume/Satuan": f"{komponen_keramik['lantai']} m²",
-    "Detail Material": f"Keramik lantai + dinding KM: {komponen_keramik['dinding_km']} m²",
-    "Estimasi Biaya": f"Rp {komponen_keramik['lantai']*90000:,.0f}"
-})
-
-# 15. Cat
-komponen_data.append({
-    "No": 15, "Komponen": "Cat Dinding & Plafon", 
-    "Volume/Satuan": f"{komponen_cat['total']} liter",
-    "Detail Material": f"Cat tembok: {komponen_cat['tembok']} ltr, Cat plafon: {komponen_cat['plafon']} ltr",
-    "Estimasi Biaya": f"Rp {komponen_cat['total']*35000:,.0f}"
-})
-
-# 16. Instalasi Listrik
-komponen_data.append({
-    "No": 16, "Komponen": "Instalasi Listrik", 
-    "Volume/Satuan": f"{komponen_listrik['lampu']} titik",
-    "Detail Material": f"Saklar: {komponen_listrik['saklar']}, Kabel: {komponen_listrik['kabel']} m, MCB: {komponen_listrik['mcb']} A",
-    "Estimasi Biaya": f"Rp {(komponen_listrik['lampu']*45000) + (komponen_listrik['saklar']*25000):,.0f}"
-})
-
-# 17. Sanitasi
-komponen_data.append({
-    "No": 17, "Komponen": "Sanitasi (KM)", 
-    "Volume/Satuan": f"{km} unit",
-    "Detail Material": f"Closet: {komponen_km['closet']}, Pipa: {komponen_km['pipa']} m, Wastafel: {komponen_km['wastafel']}",
-    "Estimasi Biaya": f"Rp {(km*800000) + (km*8*50000):,.0f}"
-})
-
-# 18. Dapur
-komponen_data.append({
-    "No": 18, "Komponen": "Kitchen Set", 
-    "Volume/Satuan": "1 set" if dapur > 0 else "-",
-    "Detail Material": "Kitchen set standar + kompor",
-    "Estimasi Biaya": f"Rp {3000000 if dapur > 0 else 0:,.0f}"
-})
-
-# 19. Kanopi
-komponen_data.append({
-    "No": 19, "Komponen": "Kanopi", 
-    "Volume/Satuan": f"{kanopi} m²",
-    "Detail Material": "Kanopi baja ringan + atap polycarbonate",
-    "Estimasi Biaya": f"Rp {kanopi*350000:,.0f}"
-})
-
-# 20. Pagar
-komponen_data.append({
-    "No": 20, "Komponen": "Pagar", 
-    "Volume/Satuan": f"{pagar} m",
-    "Detail Material": "Pagar besi minimalis + cat",
-    "Estimasi Biaya": f"Rp {pagar*850000:,.0f}"
-})
-
-# Menampilkan tabel
-df_komponen = pd.DataFrame(komponen_data)
-st.dataframe(
-    df_komponen,
-    use_container_width=True,
-    hide_index=True,
-    column_config={
-        "No": st.column_config.NumberColumn("No", width="small"),
-        "Komponen": st.column_config.TextColumn("Komponen", width="medium"),
-        "Volume/Satuan": st.column_config.TextColumn("Volume / Satuan", width="small"),
-        "Detail Material": st.column_config.TextColumn("Detail Material", width="large"),
-        "Estimasi Biaya": st.column_config.TextColumn("Estimasi Biaya", width="medium")
+    
+    # ========== KOMPONEN 3: RING BALOK ==========
+    vol_ring = keliling * 0.15 * 0.2
+    ring = {
+        'volume': round(vol_ring, 2),
+        'semen': math.ceil(vol_ring * 8.5),
+        'pasir': round(vol_ring * 0.7, 2),
+        'split': round(vol_ring * 0.9, 2),
+        'besi_kg': round(vol_ring * 130, 1)
     }
-)
-
-st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
-
-# ==================== TOTAL KESELURUHAN ====================
-st.markdown("### 💰 Ringkasan Total Material & Biaya")
-
-col1, col2, col3, col4, col5 = st.columns(5)
-
-with col1:
-    st.metric("Total Semen", f"{total_semen} sak")
-with col2:
-    st.metric("Total Pasir", f"{total_pasir:.2f} m³")
-with col3:
-    st.metric("Total Split", f"{total_split:.2f} m³")
-with col4:
-    st.metric("Total Besi", f"{total_besi:.1f} kg")
-with col5:
-    st.metric("Tenaga Kerja", f"{tukang} Tukang + {kenek} Kenek")
-
-st.markdown("---")
-
-# Grand Total
-st.markdown(f"""
-<div style="background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border-radius: 16px; padding: 25px; text-align: center; margin-top: 20px;">
-    <p style="color: #dbeafe; font-size: 14px; margin: 0;">GRAND TOTAL RENCANA ANGGARAN BIAYA (RAB)</p>
-    <h2 style="color: white; margin: 10px 0 0 0; font-size: 42px;">Rp {total_biaya:,.0f}</h2>
-    <p style="color: #bfdbfe; margin-top: 10px; font-size: 12px;">*Sudah termasuk material, upah tukang, dan overhead</p>
-</div>
-""", unsafe_allow_html=True)
-
-# ==================== EXPORT DATA ====================
-st.markdown("---")
-st.markdown("### 📄 Export Data")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    # Export CSV
-    csv = df_komponen.to_csv(index=False).encode('utf-8')
-    st.download_button(
-        label="📥 Download CSV (20 Komponen)",
-        data=csv,
-        file_name=f"arki_estimator_20_komponen_{datetime.now().strftime('%Y%m%d')}.csv",
-        mime="text/csv",
-        use_container_width=True
+    
+    # ========== KOMPONEN 4: KOLOM PRAKTIS ==========
+    jumlah_kolom = math.ceil(keliling / 3) * lantai
+    vol_kolom = jumlah_kolom * 0.13 * 0.13 * tinggi
+    kolom = {
+        'jumlah': jumlah_kolom,
+        'volume': round(vol_kolom, 2),
+        'semen': math.ceil(vol_kolom * 9),
+        'pasir': round(vol_kolom * 0.72, 2),
+        'split': round(vol_kolom * 0.95, 2),
+        'besi_kg': round(vol_kolom * 160, 1)
+    }
+    
+    # ========== KOMPONEN 5: BEKISTING ==========
+    luas_bekisting = (vol_sloof * 8) + (vol_ring * 7) + (vol_kolom * 10)
+    bekisting = {
+        'luas': round(luas_bekisting, 2),
+        'triplek': math.ceil(luas_bekisting * 0.4),
+        'kaso': math.ceil(luas_bekisting * 2.8),
+        'paku': round(luas_bekisting * 0.22, 1)
+    }
+    
+    # ========== KOMPONEN 6: CAKAR AYAM ==========
+    cakar = hitung_cakar_ayam(panjang, lebar, lantai, ukuran_besi)
+    
+    # ========== KOMPONEN 7: DINDING ==========
+    dinding = hitung_dinding_presisi(panjang, lebar, tinggi, kamar, km, ruang_tamu, dapur, garasi)
+    
+    # Pilih jenis bata
+    if jenis_bata == "merah":
+        jumlah_bata = dinding['bata_merah']
+    else:
+        jumlah_bata = dinding['bata_hebel']
+    
+    # ========== KOMPONEN 8: ATAP ==========
+    sudut_atap = 30
+    luas_atap = luas_bangunan * (1 / math.cos(math.radians(sudut_atap))) * 1.1
+    genteng_per_m2 = {'metal': 1.6, 'tanah': 28, 'beton': 11}
+    genteng = math.ceil(luas_atap * genteng_per_m2[jenis_atap])
+    
+    # ========== KOMPONEN 9: RANGKA ATAP ==========
+    if rangka_atap == 'baja':
+        rangka = {
+            'jenis': 'Baja Ringan',
+            'kanal_c': math.ceil(luas_atap * 4.8),
+            'reng': math.ceil(luas_atap * 2.8),
+            'sekrup': math.ceil(luas_atap * 14)
+        }
+    else:
+        rangka = {
+            'jenis': 'Kayu',
+            'kayu_kasau': math.ceil(luas_atap * 6),
+            'kayu_reng': math.ceil(luas_atap * 4),
+            'paku': math.ceil(luas_atap * 0.5)
+        }
+    
+    # ========== KOMPONEN 10: PLAFON ==========
+    plafon = {
+        'luas': round(luas_bangunan, 2),
+        'gypsum': math.ceil(luas_bangunan * 0.4),
+        'hollow': math.ceil(luas_bangunan * 0.9),
+        'list': math.ceil(keliling * 1.3)
+    }
+    
+    # ========== KOMPONEN 11: KERAMIK ==========
+    keramik = {
+        'lantai': math.ceil(luas_bangunan * 1.08),
+        'dinding_km': km * 8,
+        'semen': math.ceil((luas_bangunan + km*8) * 0.35),
+        'pasir': round((luas_bangunan + km*8) * 0.035, 2)
+    }
+    
+    # ========== KOMPONEN 12: LISTRIK ==========
+    titik_listrik = kamar * 3 + km * 2 + ruang_tamu * 3 + dapur * 3 + garasi * 1 + 2
+    listrik = {
+        'titik_lampu': titik_listrik,
+        'saklar': math.ceil(titik_listrik * 0.6),
+        'stop_kontak': math.ceil(titik_listrik * 0.5),
+        'kabel_meter': titik_listrik * 12,
+        'mcb': 6 if lantai >= 2 else 4
+    }
+    
+    # ========== KOMPONEN 13: SANITASI ==========
+    sanitasi = {
+        'closet': km,
+        'wastafel': km,
+        'pipa_air_bersih': km * 12,
+        'pipa_air_kotor': km * 8,
+        'septictank': 1 if km > 0 else 0
+    }
+    
+    # ========== KOMPONEN 14: PINTU ==========
+    pintu = {
+        'jumlah': dinding['jumlah_pintu'],
+        'harga_satuan': 500000,
+        'total': dinding['jumlah_pintu'] * 500000
+    }
+    
+    # ========== KOMPONEN 15: JENDELA ==========
+    jendela = {
+        'jumlah': dinding['jumlah_jendela'],
+        'harga_satuan': 300000,
+        'total': dinding['jumlah_jendela'] * 300000
+    }
+    
+    # ========== KOMPONEN 16: CAT ==========
+    cat = {
+        'tembok': math.ceil(dinding['luas_bersih'] * 0.14),
+        'plafon': math.ceil(luas_bangunan * 0.12),
+        'kayu_besi': math.ceil((dinding['jumlah_pintu'] + dinding['jumlah_jendela']) * 0.5),
+        'total': math.ceil(dinding['luas_bersih'] * 0.14 + luas_bangunan * 0.12)
+    }
+    
+    # ========== KOMPONEN 17: DAPUR ==========
+    dapur_set = {
+        'tersedia': dapur > 0,
+        'kitchen_set': 3000000 if dapur > 0 else 0,
+        'meja_dapur': 1500000 if dapur > 0 else 0,
+        'total': 4500000 if dapur > 0 else 0
+    }
+    
+    # ========== KOMPONEN 18: KANOPI ==========
+    kanopi_comp = {
+        'luas': kanopi,
+        'harga_satuan': 350000,
+        'total': kanopi * 350000
+    }
+    
+    # ========== KOMPONEN 19: PAGAR ==========
+    pagar_comp = {
+        'panjang': pagar,
+        'harga_satuan': 850000,
+        'total': pagar * 850000
+    }
+    
+    # ========== KOMPONEN 20: TENAGA KERJA ==========
+    tenaga = {
+        'tukang': max(2, math.ceil(luas_total / 28)),
+        'kenek': max(2, math.ceil(luas_total / 35)),
+        'hari': max(30, math.ceil(luas_total / 2.8)),
+        'biaya_tukang': 0,
+        'biaya_kenek': 0,
+        'total': 0
+    }
+    tenaga['biaya_tukang'] = tenaga['tukang'] * upah_tukang * tenaga['hari']
+    tenaga['biaya_kenek'] = tenaga['kenek'] * upah_kenek * tenaga['hari']
+    tenaga['total'] = tenaga['biaya_tukang'] + tenaga['biaya_kenek']
+    
+    # ========== TOTAL REKAP MATERIAL ==========
+    total_semen = (pondasi['semen'] + sloof['semen'] + ring['semen'] + 
+                   kolom['semen'] + cakar['semen'] + dinding['semen_pasang'] + 
+                   dinding['semen_plester'] + keramik['semen'])
+    
+    total_pasir = (pondasi['pasir'] + sloof['pasir'] + ring['pasir'] + 
+                   kolom['pasir'] + cakar['pasir'] + dinding['pasir_pasang'] + 
+                   dinding['pasir_plester'] + keramik['pasir'])
+    
+    total_split = (sloof['split'] + ring['split'] + kolom['split'] + cakar['split'])
+    
+    total_besi = (sloof['besi_kg'] + ring['besi_kg'] + kolom['besi_kg'] + cakar['besi_kg'])
+    
+    # ========== TOTAL BIAYA ==========
+    harga_satuan = {
+        'semen': 65000, 'pasir': 300000, 'split': 320000, 'batu': 250000,
+        'bata_merah': 800, 'bata_hebel': 12000, 'besi': 15000,
+        'triplek': 180000, 'kaso': 25000, 'paku': 18000,
+        'genteng_metal': 25000, 'genteng_tanah': 5000, 'genteng_beton': 12000,
+        'rangka_baja': 15000, 'rangka_kayu': 25000,
+        'gypsum': 45000, 'hollow': 35000, 'list': 8000,
+        'keramik': 90000, 'kabel': 15000, 'saklar': 25000,
+        'lampu': 45000, 'mcb': 75000, 'closet': 800000,
+        'wastafel': 300000, 'pipa': 50000, 'cat': 35000,
+        'septictank': 2000000
+    }
+    
+    total_biaya_material = (
+        # Pondasi
+        pondasi['batu_belah'] * harga_satuan['batu'] +
+        pondasi['semen'] * harga_satuan['semen'] +
+        pondasi['pasir'] * harga_satuan['pasir'] +
+        # Sloof, Ring, Kolom, Cakar
+        (sloof['semen'] + ring['semen'] + kolom['semen'] + cakar['semen']) * harga_satuan['semen'] +
+        (sloof['pasir'] + ring['pasir'] + kolom['pasir'] + cakar['pasir']) * harga_satuan['pasir'] +
+        (sloof['split'] + ring['split'] + kolom['split'] + cakar['split']) * harga_satuan['split'] +
+        (sloof['besi_kg'] + ring['besi_kg'] + kolom['besi_kg'] + cakar['besi_kg']) * harga_satuan['besi'] +
+        # Bekisting
+        bekisting['triplek'] * harga_satuan['triplek'] +
+        bekisting['kaso'] * harga_satuan['kaso'] +
+        bekisting['paku'] * harga_satuan['paku'] +
+        # Dinding
+        jumlah_bata * (harga_satuan['bata_merah'] if jenis_bata == 'merah' else harga_satuan['bata_hebel']) +
+        dinding['semen_pasang'] * harga_satuan['semen'] +
+        dinding['semen_plester'] * harga_satuan['semen'] +
+        dinding['pasir_pasang'] * harga_satuan['pasir'] +
+        dinding['pasir_plester'] * harga_satuan['pasir'] +
+        # Atap
+        genteng * (harga_satuan[f'genteng_{jenis_atap}']) +
+        (rangka['kanal_c'] * harga_satuan['rangka_baja'] if rangka_atap == 'baja' else rangka['kayu_kasau'] * harga_satuan['rangka_kayu']) +
+        # Plafon
+        plafon['gypsum'] * harga_satuan['gypsum'] +
+        plafon['hollow'] * harga_satuan['hollow'] +
+        plafon['list'] * harga_satuan['list'] +
+        # Keramik
+        (keramik['lantai'] + keramik['dinding_km']) * harga_satuan['keramik'] +
+        keramik['semen'] * harga_satuan['semen'] +
+        # Listrik
+        listrik['kabel_meter'] * harga_satuan['kabel'] +
+        listrik['saklar'] * harga_satuan['saklar'] +
+        listrik['titik_lampu'] * harga_satuan['lampu'] +
+        listrik['mcb'] * harga_satuan['mcb'] +
+        # Sanitasi
+        sanitasi['closet'] * harga_satuan['closet'] +
+        sanitasi['wastafel'] * harga_satuan['wastafel'] +
+        (sanitasi['pipa_air_bersih'] + sanitasi['pipa_air_kotor']) * harga_satuan['pipa'] +
+        sanitasi['septictank'] * harga_satuan['septictank'] +
+        # Pintu & Jendela
+        pintu['total'] + jendela['total'] +
+        # Cat
+        cat['total'] * harga_satuan['cat'] +
+        # Dapur
+        dapur_set['total'] +
+        # Kanopi & Pagar
+        kanopi_comp['total'] + pagar_comp['total']
     )
-
-with col2:
-    # Export JSON
-    export_json = {
+    
+    total_biaya = total_biaya_material + tenaga['total']
+    
+    # ============ TAMPILAN HASIL ============
+    st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    
+    # Ringkasan Proyek
+    st.markdown("### 📊 Ringkasan Proyek")
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown(f"""
+        <div class="metric-card">
+            <p style="color:#475569; font-size:13px; margin:0;">🏠 Luas Bangunan</p>
+            <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{luas_bangunan} m²</h3>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="metric-card">
+            <p style="color:#475569; font-size:13px; margin:0;">🦶 Cakar Ayam</p>
+            <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{cakar['jumlah']} titik</h3>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div class="metric-card">
+            <p style="color:#475569; font-size:13px; margin:0;">📅 Estimasi Waktu</p>
+            <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{tenaga['hari']} hari</h3>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col4:
+        st.markdown(f"""
+        <div class="metric-card">
+            <p style="color:#475569; font-size:13px; margin:0;">👷 Tenaga Kerja</p>
+            <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:24px;">{tenaga['tukang']} Tk + {tenaga['kenek']} Kn</h3>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    
+    # ============ 20 KOMPONEN ============
+    st.markdown("### 📋 Rincian 20 Komponen")
+    
+    # Komponen 1-5: Struktur
+    st.markdown("#### 🏗️ STRUKTUR UTAMA (1-5)")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Komponen 1: Pondasi
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">1</span> <span class="component-title">Pondasi Batu Kali</span></div>
+                <span>🏗️</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{pondasi['volume']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Batu Belah</div><div class="detail-value">{pondasi['batu_belah']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{pondasi['semen']} sak</div></div>
+                    <div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{pondasi['pasir']} m³</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Komponen 2: Sloof
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">2</span> <span class="component-title">Sloof (20x25 cm)</span></div>
+                <span>📏</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{sloof['volume']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{sloof['semen']} sak</div></div>
+                    <div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{sloof['pasir']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Split</div><div class="detail-value">{sloof['split']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{sloof['besi_kg']} kg</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Komponen 3: Ring Balok
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">3</span> <span class="component-title">Ring Balok (15x20 cm)</span></div>
+                <span>📏</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{ring['volume']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{ring['semen']} sak</div></div>
+                    <div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{ring['pasir']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Split</div><div class="detail-value">{ring['split']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{ring['besi_kg']} kg</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Komponen 4: Kolom Praktis
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">4</span> <span class="component-title">Kolom Praktis (13x13 cm)</span></div>
+                <span>🏛️</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{kolom['jumlah']} buah</div></div>
+                    <div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{kolom['volume']} m³</div></div>
+                    <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{kolom['semen']} sak</div></div>
+                    <div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{kolom['besi_kg']} kg</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Komponen 5: Bekisting
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">5</span> <span class="component-title">Bekisting</span></div>
+                <span>🪵</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{bekisting['luas']} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Triplek</div><div class="detail-value">{bekisting['triplek']} lbr</div></div>
+                    <div class="detail-item"><div class="detail-label">Kaso</div><div class="detail-value">{bekisting['kaso']} btg</div></div>
+                    <div class="detail-item"><div class="detail-label">Paku</div><div class="detail-value">{bekisting['paku']} kg</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Komponen 6: Cakar Ayam
+    st.markdown("#### 🦶 PONDASI TITIK (6)")
+    st.markdown(f"""
+    <div class="component-card">
+        <div class="component-header">
+            <div><span class="component-num">6</span> <span class="component-title">Cakar Ayam</span></div>
+            <span>🦶</span>
+        </div>
+        <div class="component-body">
+            <div class="detail-grid">
+                <div class="detail-item"><div class="detail-label">Jumlah Titik</div><div class="detail-value">{cakar['jumlah']} titik</div></div>
+                <div class="detail-item"><div class="detail-label">Jarak</div><div class="detail-value">{cakar['jarak']}</div></div>
+                <div class="detail-item"><div class="detail-label">Ukuran</div><div class="detail-value">{cakar['ukuran_cm']:.0f}x{cakar['ukuran_cm']:.0f} cm</div></div>
+                <div class="detail-item"><div class="detail-label">Volume Beton</div><div class="detail-value">{cakar['volume']} m³</div></div>
+                <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{cakar['semen']} sak</div></div>
+                <div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{cakar['pasir']} m³</div></div>
+                <div class="detail-item"><div class="detail-label">Split</div><div class="detail-value">{cakar['split']} m³</div></div>
+                <div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{cakar['besi_kg']} kg ({cakar['besi_batang']} btg)</div></div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Komponen 7: Dinding
+    st.markdown("#### 🧱 DINDING (7)")
+    st.markdown(f"""
+    <div class="component-card">
+        <div class="component-header">
+            <div><span class="component-num">7</span> <span class="component-title">Dinding Bata</span></div>
+            <span>🧱</span>
+        </div>
+        <div class="component-body">
+            <div class="detail-grid">
+                <div class="detail-item"><div class="detail-label">Luas Bersih</div><div class="detail-value">{dinding['luas_bersih']} m²</div></div>
+                <div class="detail-item"><div class="detail-label">Pintu</div><div class="detail-value">{dinding['jumlah_pintu']} bh (-{dinding['luas_pintu']} m²)</div></div>
+                <div class="detail-item"><div class="detail-label">Jendela</div><div class="detail-value">{dinding['jumlah_jendela']} bh (-{dinding['luas_jendela']} m²)</div></div>
+                <div class="detail-item"><div class="detail-label">Bata</div><div class="detail-value">{jumlah_bata:,} pcs</div></div>
+                <div class="detail-item"><div class="detail-label">Semen Pasang</div><div class="detail-value">{dinding['semen_pasang']} sak</div></div>
+                <div class="detail-item"><div class="detail-label">Semen Plester</div><div class="detail-value">{dinding['semen_plester']} sak</div></div>
+                <div class="detail-item"><div class="detail-label">Pasir Pasang</div><div class="detail-value">{dinding['pasir_pasang']} m³</div></div>
+                <div class="detail-item"><div class="detail-label">Pasir Plester</div><div class="detail-value">{dinding['pasir_plester']} m³</div></div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Komponen 8-10: Atap, Rangka, Plafon
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### 🏠 ATAP & RANGKA (8-9)")
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">8</span> <span class="component-title">Atap & Genteng</span></div>
+                <span>🏠</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Luas Atap</div><div class="detail-value">{luas_atap:.2f} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Genteng {jenis_atap.title()}</div><div class="detail-value">{genteng:,} pcs</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">9</span> <span class="component-title">Rangka Atap ({rangka['jenis']})</span></div>
+                <span>🔧</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">{'Kanal C' if rangka_atap=='baja' else 'Kayu Kasau'}</div><div class="detail-value">{rangka['kanal_c'] if rangka_atap=='baja' else rangka['kayu_kasau']} {'kg' if rangka_atap=='baja' else 'btg'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Reng</div><div class="detail-value">{rangka['reng']} {'kg' if rangka_atap=='baja' else 'btg'}</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("#### ✨ PLAFON & KERAMIK (10-11)")
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">10</span> <span class="component-title">Plafon Gypsum</span></div>
+                <span>✨</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{plafon['luas']} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Gypsum</div><div class="detail-value">{plafon['gypsum']} lbr</div></div>
+                    <div class="detail-item"><div class="detail-label">Hollow</div><div class="detail-value">{plafon['hollow']} btg</div></div>
+                    <div class="detail-item"><div class="detail-label">List Gypsum</div><div class="detail-value">{plafon['list']} m</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">11</span> <span class="component-title">Keramik Lantai & Dinding</span></div>
+                <span>🪨</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Keramik Lantai</div><div class="detail-value">{keramik['lantai']} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Keramik Dinding KM</div><div class="detail-value">{keramik['dinding_km']} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{keramik['semen']} sak</div></div>
+                    <div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{keramik['pasir']} m³</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Komponen 12-15: Listrik, Sanitasi, Pintu, Jendela
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("#### ⚡ MEKANIKAL & ELEKTRIKAL (12-13)")
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">12</span> <span class="component-title">Instalasi Listrik</span></div>
+                <span>⚡</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Titik Lampu</div><div class="detail-value">{listrik['titik_lampu']} titik</div></div>
+                    <div class="detail-item"><div class="detail-label">Saklar</div><div class="detail-value">{listrik['saklar']} bh</div></div>
+                    <div class="detail-item"><div class="detail-label">Stop Kontak</div><div class="detail-value">{listrik['stop_kontak']} bh</div></div>
+                    <div class="detail-item"><div class="detail-label">Kabel</div><div class="detail-value">{listrik['kabel_meter']} m</div></div>
+                    <div class="detail-item"><div class="detail-label">MCB</div><div class="detail-value">{listrik['mcb']} A</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">13</span> <span class="component-title">Sanitasi</span></div>
+                <span>🚽</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Closet</div><div class="detail-value">{sanitasi['closet']} bh</div></div>
+                    <div class="detail-item"><div class="detail-label">Wastafel</div><div class="detail-value">{sanitasi['wastafel']} bh</div></div>
+                    <div class="detail-item"><div class="detail-label">Pipa Air Bersih</div><div class="detail-value">{sanitasi['pipa_air_bersih']} m</div></div>
+                    <div class="detail-item"><div class="detail-label">Pipa Air Kotor</div><div class="detail-value">{sanitasi['pipa_air_kotor']} m</div></div>
+                    <div class="detail-item"><div class="detail-label">Septic Tank</div><div class="detail-value">{'Ya' if sanitasi['septictank']>0 else 'Tidak'}</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("#### 🚪 BUKAAN & FINISHING (14-16)")
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">14</span> <span class="component-title">Pintu</span></div>
+                <span>🚪</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{pintu['jumlah']} unit</div></div>
+                    <div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {pintu['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">15</span> <span class="component-title">Jendela</span></div>
+                <span>🪟</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{jendela['jumlah']} unit</div></div>
+                    <div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {jendela['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">16</span> <span class="component-title">Cat</span></div>
+                <span>🎨</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Cat Tembok</div><div class="detail-value">{cat['tembok']} liter</div></div>
+                    <div class="detail-item"><div class="detail-label">Cat Plafon</div><div class="detail-value">{cat['plafon']} liter</div></div>
+                    <div class="detail-item"><div class="detail-label">Total</div><div class="detail-value">{cat['total']} liter</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Komponen 17-20: Dapur, Kanopi, Pagar, Tenaga
+    st.markdown("#### 🍳 OPSIONAL & TENAGA KERJA (17-20)")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">17</span> <span class="component-title">Kitchen Set</span></div>
+                <span>🍳</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Status</div><div class="detail-value">{'Tersedia' if dapur_set['tersedia'] else 'Tidak'}</div></div>
+                    <div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {dapur_set['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">18</span> <span class="component-title">Kanopi</span></div>
+                <span>🏡</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{kanopi_comp['luas']} m²</div></div>
+                    <div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {kanopi_comp['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">19</span> <span class="component-title">Pagar</span></div>
+                <span>🚧</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Panjang</div><div class="detail-value">{pagar_comp['panjang']} m</div></div>
+                    <div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {pagar_comp['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="component-card">
+            <div class="component-header">
+                <div><span class="component-num">20</span> <span class="component-title">Tenaga Kerja</span></div>
+                <span>👷</span>
+            </div>
+            <div class="component-body">
+                <div class="detail-grid">
+                    <div class="detail-item"><div class="detail-label">Tukang</div><div class="detail-value">{tenaga['tukang']} orang</div></div>
+                    <div class="detail-item"><div class="detail-label">Kenek</div><div class="detail-value">{tenaga['kenek']} orang</div></div>
+                    <div class="detail-item"><div class="detail-label">Waktu Pengerjaan</div><div class="detail-value">{tenaga['hari']} hari</div></div>
+                    <div class="detail-item"><div class="detail-label">Biaya Tukang</div><div class="detail-value">Rp {tenaga['biaya_tukang']:,.0f}</div></div>
+                    <div class="detail-item"><div class="detail-label">Biaya Kenek</div><div class="detail-value">Rp {tenaga['biaya_kenek']:,.0f}</div></div>
+                    <div class="detail-item"><div class="detail-label">Total Upah</div><div class="detail-value">Rp {tenaga['total']:,.0f}</div></div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Ringkasan Material
+    st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+    st.markdown("### 📦 Ringkasan Total Material")
+    
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.metric("Total Semen", f"{total_semen} sak")
+    with col2:
+        st.metric("Total Pasir", f"{total_pasir:.2f} m³")
+    with col3:
+        st.metric("Total Split", f"{total_split:.2f} m³")
+    with col4:
+        st.metric("Total Besi", f"{total_besi:.1f} kg")
+    with col5:
+        st.metric("Total Bata", f"{jumlah_bata:,} pcs")
+    
+    # Grand Total
+    st.markdown(f"""
+    <div class="grand-total">
+        <p style="color: #dbeafe; font-size: 14px; margin: 0;">GRAND TOTAL RENCANA ANGGARAN BIAYA (RAB)</p>
+        <h2 style="color: white; margin: 10px 0 0 0; font-size: 42px;">Rp {total_biaya:,.0f}</h2>
+        <p style="color: #bfdbfe; margin-top: 10px; font-size: 12px;">*Sudah termasuk material, upah tukang, dan overhead</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Export Data
+    st.markdown("---")
+    st.markdown("### 📄 Export Data")
+    
+    # Buat data untuk export
+    export_data = {
         'timestamp': datetime.now().isoformat(),
-        'input_parameter': {
-            'panjang': panjang, 'lebar': lebar, 'tinggi': tinggi, 'lantai': lantai,
-            'kamar': kamar, 'km': km, 'garasi': garasi, 'kanopi': kanopi, 'pagar': pagar
+        'dimensi': {'panjang': panjang, 'lebar': lebar, 'tinggi': tinggi, 'lantai': lantai},
+        'ruangan': {'kamar': kamar, 'km': km, 'dapur': dapur, 'garasi': garasi},
+        'material': {
+            'total_semen': total_semen, 'total_pasir': total_pasir,
+            'total_split': total_split, 'total_besi': total_besi,
+            'total_bata': jumlah_bata, 'total_genteng': genteng
         },
-        'total': {
-            'total_biaya': total_biaya,
-            'total_semen': total_semen,
-            'total_pasir': total_pasir,
-            'total_split': total_split,
-            'total_besi': total_besi,
-            'estimasi_hari': hari
-        },
-        'detail_20_komponen': komponen_data
+        'tenaga': {'tukang': tenaga['tukang'], 'kenek': tenaga['kenek'], 'hari': tenaga['hari']},
+        'total_biaya': total_biaya
     }
-    json_str = json.dumps(export_json, indent=2, default=str)
-    st.download_button(
-        label="📥 Download JSON (Lengkap)",
-        data=json_str,
-        file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.json",
-        mime="application/json",
-        use_container_width=True
-    )
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        json_str = json.dumps(export_data, indent=2, default=str)
+        st.download_button("📥 Download JSON", json_str, f"estimator_{datetime.now().strftime('%Y%m%d')}.json", "application/json")
+    with col2:
+        df_export = pd.DataFrame([{
+            'Tanggal': datetime.now().strftime('%Y-%m-%d'),
+            'Luas(m²)': luas_bangunan, 'Semen(sak)': total_semen,
+            'Pasir(m³)': total_pasir, 'Split(m³)': total_split,
+            'Besi(kg)': total_besi, 'Bata(pcs)': jumlah_bata,
+            'Total Biaya': total_biaya
+        }])
+        csv = df_export.to_csv(index=False).encode('utf-8')
+        st.download_button("📥 Download CSV", csv, f"estimator_{datetime.now().strftime('%Y%m%d')}.csv", "text/csv")
+
+else:
+    # Tampilkan pesan sebelum hitung
+    st.info("👆 Silakan isi data proyek di atas, lalu klik tombol **HITUNG KEBUTUHAN** untuk melihat hasil perhitungan 20 komponen.")
 
 # Footer
 st.markdown("""
 <div style="text-align: center; margin-top: 40px; padding: 20px;">
     <hr style="border-color: #e2e8f0;">
-    <p style="color: #94a3b8;">🏗️ ARKI ESTIMATOR PRO | 20 Komponen Lengkap | © 2024</p>
-    <p style="color: #cbd5e1; font-size: 12px;">*Harga bersifat estimasi, dapat berubah sesuai daerah dan waktu</p>
+    <p style="color: #94a3b8;">🏗️ ARKIDIGITAL ESTIMATOR PRO | Presisi 20 Komponen | © 2024</p>
+    <p style="color: #cbd5e1; font-size: 12px;">Aplikasi hitung cepat kebutuhan material bangunan | Data bersifat estimasi</p>
 </div>
 """, unsafe_allow_html=True)
