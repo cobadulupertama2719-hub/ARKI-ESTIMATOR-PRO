@@ -1,4 +1,4 @@
-# app.py - ARKIDIGITAL ESTIMATOR PRO (Login Wajib - Tanpa PDF)
+# app.py - ARKIDIGITAL ESTIMATOR PRO (Login + Premium Access WhatsApp)
 
 import streamlit as st
 import math
@@ -53,16 +53,52 @@ st.markdown("""
     .hero-badge { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 30px; color: white; font-size: 11px; }
     
     .login-card {
-        max-width: 420px;
-        margin: 80px auto;
+        max-width: 450px;
+        margin: 60px auto;
         background: white;
         border-radius: 24px;
-        padding: 32px;
+        padding: 40px 32px;
         box-shadow: 0 20px 35px rgba(0,0,0,0.1);
         border: 1px solid #e2e8f0;
         text-align: center;
     }
     .login-icon { font-size: 64px; margin-bottom: 16px; }
+    
+    .premium-button {
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+        color: white;
+        padding: 12px 24px;
+        border-radius: 40px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 700;
+        font-size: 16px;
+        transition: all 0.2s;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+    }
+    .premium-button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+    }
+    
+    .price-card {
+        background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        border-radius: 16px;
+        padding: 20px;
+        text-align: center;
+        margin: 20px 0;
+        border: 1px solid #f59e0b;
+    }
+    .price-text {
+        font-size: 32px;
+        font-weight: 800;
+        color: #92400e;
+    }
     
     .metric-card {
         background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
@@ -147,12 +183,18 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# ==================== FUNGSI WHATSAPP ====================
+def get_whatsapp_link():
+    phone = "6288228878258"
+    message = "Hallo Kak, mau order akses premium Aplikasi Hitung Bangunan ARKIDIGITAL ESTIMATOR PRO"
+    return f"https://wa.me/{phone}?text={message.replace(' ', '%20')}"
+
 # ==================== FUNGSI LOGIN ====================
 def do_login():
     if st.session_state.username == "Arkidigital" and st.session_state.password == "kontraktorarki":
         st.session_state.logged_in = True
     else:
-        st.error("❌ Username atau password salah!")
+        st.error("❌ Username atau password salah! Hubungi WhatsApp untuk mendapatkan akses.")
 
 def do_logout():
     st.session_state.logged_in = False
@@ -278,7 +320,7 @@ if not st.session_state.logged_in:
     <div class="login-card">
         <div class="login-icon">🏗️</div>
         <h2 style="color: #1e40af;">ARKIDIGITAL</h2>
-        <h3 style="color: #1e293b; margin-bottom: 24px;">ESTIMATOR PRO</h3>
+        <h3 style="color: #1e293b; margin-bottom: 16px;">ESTIMATOR PRO</h3>
         <p style="color: #64748b; margin-bottom: 24px;">Aplikasi Hitung Kebutuhan Material Bangunan<br>20 Komponen Presisi + AI Denah Generator</p>
     </div>
     """, unsafe_allow_html=True)
@@ -287,10 +329,27 @@ if not st.session_state.logged_in:
     st.text_input("Password", type="password", key="password", placeholder="Masukkan password")
     st.button("🔓 Login", on_click=do_login, use_container_width=True)
     
+    st.markdown("---")
+    
+    # Premium Access Section
+    st.markdown("### 💎 Belum Punya Akses?")
     st.markdown("""
-    <div style="text-align: center; margin-top: 20px;">
-        <p style="color: #94a3b8; font-size: 12px;">🔑 Demo Akses: Username: Arkidigital | Password: kontraktorarki</p>
+    <div class="price-card">
+        <p style="color: #92400e; margin-bottom: 8px;">Akses Premium Selamanya</p>
+        <div class="price-text">Rp 127.000</div>
+        <p style="color: #78350f; font-size: 12px; margin-top: 8px;">✅ 20 Komponen Lengkap<br>✅ AI Denah Generator<br>✅ Update Fitur Gratis</p>
     </div>
+    """, unsafe_allow_html=True)
+    
+    wa_link = get_whatsapp_link()
+    st.markdown(f"""
+    <a href="{wa_link}" target="_blank" class="premium-button" style="text-decoration: none;">
+        💬 Beli Akses Premium via WhatsApp
+    </a>
+    <p style="text-align: center; color: #94a3b8; font-size: 11px; margin-top: 12px;">
+        Klik tombol di atas untuk order akses premium<br>
+        Kirim pesan: "Hallo Kak, mau order akses aplikasi hitung bangunan nya"
+    </p>
     </div>
     """, unsafe_allow_html=True)
     st.stop()
@@ -306,7 +365,7 @@ st.markdown(f"""
         </div>
     </div>
     <div style="display: flex; gap: 12px; align-items: center;">
-        <div class="hero-badge">✅ LOGGED IN</div>
+        <div class="hero-badge">✅ PREMIUM ACTIVE</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -507,48 +566,48 @@ if st.session_state.hitung:
     
     with col_left:
         st.markdown(f"""
-        <div class="component-card"><div class="component-header"><div><span class="component-num">1</span><span class="component-title">Pondasi Batu Kali</span></div>🏗️</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen1['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Batu Belah</div><div class="detail-value">{komponen1['batu_belah']} m³</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen1['semen']} sak</div></div><div class="detail-item"><div class="detail-label">Pasir</div><div class="detail-value">{komponen1['pasir']} m³</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">1</span><span class="component-title">Pondasi Batu Kali</span></div>🏗️</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen1['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Batu Belah</div><div class="detail-value">{komponen1['batu_belah']} m³</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen1['semen']} sak</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">2</span><span class="component-title">Sloof (20x25 cm)</span></div>📏</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen2['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen2['semen']} sak</div></div><div class="detail-item"><div class="detail-label">Besi Utama</div><div class="detail-value">{komponen2['besi_utama_kg']} kg ({komponen2['besi_utama_batang']} btg)</div></div><div class="detail-item"><div class="detail-label">Besi Begel</div><div class="detail-value">{komponen2['besi_begel_kg']} kg ({komponen2['besi_begel_batang']} btg)</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">2</span><span class="component-title">Sloof</span></div>📏</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen2['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Besi Utama</div><div class="detail-value">{komponen2['besi_utama_kg']} kg ({komponen2['besi_utama_batang']} btg)</div></div><div class="detail-item"><div class="detail-label">Besi Begel</div><div class="detail-value">{komponen2['besi_begel_kg']} kg ({komponen2['besi_begel_batang']} btg)</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">3</span><span class="component-title">Ring Balok (15x20 cm)</span></div>📏</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen3['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen3['semen']} sak</div></div><div class="detail-item"><div class="detail-label">Besi Utama</div><div class="detail-value">{komponen3['besi_utama_kg']} kg</div></div><div class="detail-item"><div class="detail-label">Besi Begel</div><div class="detail-value">{komponen3['besi_begel_kg']} kg</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">3</span><span class="component-title">Ring Balok</span></div>📏</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen3['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Besi Utama</div><div class="detail-value">{komponen3['besi_utama_kg']} kg</div></div><div class="detail-item"><div class="detail-label">Besi Begel</div><div class="detail-value">{komponen3['besi_begel_kg']} kg</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">4</span><span class="component-title">Kolom Praktis (13x13 cm)</span></div>🏛️</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen4['jumlah']} bh</div></div><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen4['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{komponen4['besi_utama_kg'] + komponen4['besi_begel_kg']} kg</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">4</span><span class="component-title">Kolom Praktis</span></div>🏛️</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen4['jumlah']} bh</div></div><div class="detail-item"><div class="detail-label">Volume</div><div class="detail-value">{komponen4['volume']} m³</div></div><div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{komponen4['besi_utama_kg'] + komponen4['besi_begel_kg']} kg</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">5</span><span class="component-title">Bekisting</span></div>🪵</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{komponen5['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Triplek</div><div class="detail-value">{komponen5['triplek']} lbr</div></div><div class="detail-item"><div class="detail-label">Kaso</div><div class="detail-value">{komponen5['kaso']} btg</div></div><div class="detail-item"><div class="detail-label">Paku</div><div class="detail-value">{komponen5['paku']} kg</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">5</span><span class="component-title">Bekisting</span></div>🪵</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{komponen5['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Triplek</div><div class="detail-value">{komponen5['triplek']} lbr</div></div><div class="detail-item"><div class="detail-label">Kaso</div><div class="detail-value">{komponen5['kaso']} btg</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">6</span><span class="component-title">Cakar Ayam</span></div>🦶</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen6['jumlah']} titik</div></div><div class="detail-item"><div class="detail-label">Jarak</div><div class="detail-value">{komponen6['jarak']}</div></div><div class="detail-item"><div class="detail-label">Ukuran</div><div class="detail-value">{komponen6['ukuran_cm']:.0f}x{komponen6['ukuran_cm']:.0f} cm</div></div><div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{komponen6['besi_kg']} kg ({komponen6['besi_batang']} btg)</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">6</span><span class="component-title">Cakar Ayam</span></div>🦶</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen6['jumlah']} titik</div></div><div class="detail-item"><div class="detail-label">Ukuran</div><div class="detail-value">{komponen6['ukuran_cm']:.0f}x{komponen6['ukuran_cm']:.0f} cm</div></div><div class="detail-item"><div class="detail-label">Besi</div><div class="detail-value">{komponen6['besi_kg']} kg</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">7</span><span class="component-title">Dinding Bata</span></div>🧱</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Bersih</div><div class="detail-value">{komponen7['luas_bersih']} m²</div></div><div class="detail-item"><div class="detail-label">Bata</div><div class="detail-value">{jumlah_bata:,} pcs</div></div><div class="detail-item"><div class="detail-label">Semen Pasang</div><div class="detail-value">{komponen7['semen_pasang']} sak</div></div><div class="detail-item"><div class="detail-label">Pintu/Jendela</div><div class="detail-value">{komponen7['jumlah_pintu']}/{komponen7['jumlah_jendela']}</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">7</span><span class="component-title">Dinding Bata</span></div>🧱</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Bersih</div><div class="detail-value">{komponen7['luas_bersih']} m²</div></div><div class="detail-item"><div class="detail-label">Bata</div><div class="detail-value">{jumlah_bata:,} pcs</div></div><div class="detail-item"><div class="detail-label">Pintu/Jendela</div><div class="detail-value">{komponen7['jumlah_pintu']}/{komponen7['jumlah_jendela']}</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">8</span><span class="component-title">Plesteran + Acian</span></div>🧱</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Plester</div><div class="detail-value">{komponen8['luas_plester']} m²</div></div><div class="detail-item"><div class="detail-label">Semen Plester</div><div class="detail-value">{komponen8['semen_plester']} sak</div></div><div class="detail-item"><div class="detail-label">Semen Acian</div><div class="detail-value">{komponen8['semen_acian']} sak</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">8</span><span class="component-title">Plesteran</span></div>🧱</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Plester</div><div class="detail-value">{komponen8['luas_plester']} m²</div></div><div class="detail-item"><div class="detail-label">Semen Plester</div><div class="detail-value">{komponen8['semen_plester']} sak</div></div><div class="detail-item"><div class="detail-label">Semen Acian</div><div class="detail-value">{komponen8['semen_acian']} sak</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">9</span><span class="component-title">Atap & Genteng</span></div>🏠</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Atap</div><div class="detail-value">{komponen9['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Genteng</div><div class="detail-value">{komponen9['genteng']:,} pcs</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">9</span><span class="component-title">Atap</span></div>🏠</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Atap</div><div class="detail-value">{komponen9['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Genteng</div><div class="detail-value">{komponen9['genteng']:,} pcs</div></div></div></div></div>
         
         <div class="component-card"><div class="component-header"><div><span class="component-num">10</span><span class="component-title">Rangka Atap</span></div>🔧</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jenis</div><div class="detail-value">{komponen10['jenis']}</div></div></div></div></div>
         """, unsafe_allow_html=True)
     
     with col_right:
         st.markdown(f"""
-        <div class="component-card"><div class="component-header"><div><span class="component-num">11</span><span class="component-title">Plafon Gypsum</span></div>✨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{komponen11['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Gypsum</div><div class="detail-value">{komponen11['gypsum']} lbr</div></div><div class="detail-item"><div class="detail-label">Hollow</div><div class="detail-value">{komponen11['hollow']} btg</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">11</span><span class="component-title">Plafon</span></div>✨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{komponen11['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Gypsum</div><div class="detail-value">{komponen11['gypsum']} lbr</div></div><div class="detail-item"><div class="detail-label">Hollow</div><div class="detail-value">{komponen11['hollow']} btg</div></div></div></div></div>
         
         <div class="component-card"><div class="component-header"><div><span class="component-num">12</span><span class="component-title">Keramik Lantai</span></div>🪨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas Lantai</div><div class="detail-value">{komponen12['lantai']} m²</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen12['semen']} sak</div></div></div></div></div>
         
         <div class="component-card"><div class="component-header"><div><span class="component-num">13</span><span class="component-title">Keramik Dinding KM</span></div>🪨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Luas</div><div class="detail-value">{komponen13['luas']} m²</div></div><div class="detail-item"><div class="detail-label">Semen</div><div class="detail-value">{komponen13['semen']} sak</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">14</span><span class="component-title">Instalasi Listrik</span></div>⚡</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Titik Lampu</div><div class="detail-value">{komponen14['titik_lampu']}</div></div><div class="detail-item"><div class="detail-label">Saklar</div><div class="detail-value">{komponen14['saklar']} bh</div></div><div class="detail-item"><div class="detail-label">Kabel</div><div class="detail-value">{komponen14['kabel_meter']} m</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">14</span><span class="component-title">Listrik</span></div>⚡</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Titik Lampu</div><div class="detail-value">{komponen14['titik_lampu']}</div></div><div class="detail-item"><div class="detail-label">Kabel</div><div class="detail-value">{komponen14['kabel_meter']} m</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">15</span><span class="component-title">Sanitasi</span></div>🚽</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Closet</div><div class="detail-value">{komponen15['closet']} bh</div></div><div class="detail-item"><div class="detail-label">Wastafel</div><div class="detail-value">{komponen15['wastafel']} bh</div></div><div class="detail-item"><div class="detail-label">Pipa</div><div class="detail-value">{komponen15['pipa_air_bersih']} m</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">15</span><span class="component-title">Sanitasi</span></div>🚽</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Closet</div><div class="detail-value">{komponen15['closet']} bh</div></div><div class="detail-item"><div class="detail-label">Wastafel</div><div class="detail-value">{komponen15['wastafel']} bh</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">16</span><span class="component-title">Pintu</span></div>🚪</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen16['jumlah']} unit</div></div><div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {komponen16['estimasi_biaya']:,.0f}</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">16</span><span class="component-title">Pintu</span></div>🚪</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen16['jumlah']} unit</div></div><div class="detail-item"><div class="detail-label">Biaya</div><div class="detail-value">Rp {komponen16['estimasi_biaya']:,.0f}</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">17</span><span class="component-title">Jendela</span></div>🪟</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen17['jumlah']} unit</div></div><div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {komponen17['estimasi_biaya']:,.0f}</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">17</span><span class="component-title">Jendela</span></div>🪟</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Jumlah</div><div class="detail-value">{komponen17['jumlah']} unit</div></div><div class="detail-item"><div class="detail-label">Biaya</div><div class="detail-value">Rp {komponen17['estimasi_biaya']:,.0f}</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">18</span><span class="component-title">Cat</span></div>🎨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Cat Tembok</div><div class="detail-value">{komponen18['tembok']} ltr</div></div><div class="detail-item"><div class="detail-label">Cat Plafon</div><div class="detail-value">{komponen18['plafon']} ltr</div></div><div class="detail-item"><div class="detail-label">Total</div><div class="detail-value">{komponen18['total']} ltr</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">18</span><span class="component-title">Cat</span></div>🎨</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Cat Tembok</div><div class="detail-value">{komponen18['tembok']} ltr</div></div><div class="detail-item"><div class="detail-label">Total</div><div class="detail-value">{komponen18['total']} ltr</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">19</span><span class="component-title">Dapur & Kitchen Set</span></div>🍳</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Status</div><div class="detail-value">{'Tersedia' if komponen19['tersedia'] else 'Tidak'}</div></div><div class="detail-item"><div class="detail-label">Estimasi Biaya</div><div class="detail-value">Rp {komponen19['kitchen_set']:,.0f}</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">19</span><span class="component-title">Dapur</span></div>🍳</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Kitchen Set</div><div class="detail-value">{'Ya' if komponen19['tersedia'] else 'Tidak'}</div></div><div class="detail-item"><div class="detail-label">Biaya</div><div class="detail-value">Rp {komponen19['kitchen_set']:,.0f}</div></div></div></div></div>
         
-        <div class="component-card"><div class="component-header"><div><span class="component-num">20</span><span class="component-title">Tenaga Kerja</span></div>👷</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Tukang</div><div class="detail-value">{komponen20['tukang']} orang</div></div><div class="detail-item"><div class="detail-label">Kenek</div><div class="detail-value">{komponen20['kenek']} orang</div></div><div class="detail-item"><div class="detail-label">Waktu</div><div class="detail-value">{komponen20['hari']} hari</div></div><div class="detail-item"><div class="detail-label">Total Upah</div><div class="detail-value">Rp {komponen20['total_upah']:,.0f}</div></div></div></div></div>
+        <div class="component-card"><div class="component-header"><div><span class="component-num">20</span><span class="component-title">Tenaga Kerja</span></div>👷</div><div class="component-body"><div class="detail-grid"><div class="detail-item"><div class="detail-label">Tukang</div><div class="detail-value">{komponen20['tukang']} org</div></div><div class="detail-item"><div class="detail-label">Kenek</div><div class="detail-value">{komponen20['kenek']} org</div></div><div class="detail-item"><div class="detail-label">Waktu</div><div class="detail-value">{komponen20['hari']} hari</div></div><div class="detail-item"><div class="detail-label">Total Upah</div><div class="detail-value">Rp {komponen20['total_upah']:,.0f}</div></div></div></div></div>
         """, unsafe_allow_html=True)
     
     # Ringkasan Material
