@@ -1,12 +1,10 @@
-# app.py - ARKI ESTIMATOR PRO (FULL LOGIC 20 KOMPONEN + MODERN DESIGN)
+# app.py - ARKI ESTIMATOR PRO (MODERN DESIGN - TANPA FPDF)
 
 import streamlit as st
 import math
 import pandas as pd
 from datetime import datetime
 import json
-from fpdf import FPDF
-import base64
 
 # ==================== KONFIGURASI ====================
 st.set_page_config(
@@ -67,24 +65,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==================== PDF GENERATOR CLASS ====================
-class RAB_PDF(FPDF):
-    def header(self):
-        self.set_font('Arial', 'B', 16)
-        self.set_text_color(16, 185, 129)
-        self.cell(0, 10, 'ARKI ESTIMATOR PRO - LAPORAN RAB', 0, 1, 'C')
-        self.set_font('Arial', '', 10)
-        self.set_text_color(100, 100, 100)
-        self.cell(0, 5, f'Dicetak: {datetime.now().strftime("%d/%m/%Y %H:%M")}', 0, 1, 'C')
-        self.ln(5)
-    
-    def footer(self):
-        self.set_y(-15)
-        self.set_font('Arial', 'I', 8)
-        self.set_text_color(128, 128, 128)
-        self.cell(0, 10, f'Halaman {self.page_no()}', 0, 0, 'C')
-
-
 # ==================== SIDEBAR INPUT ====================
 with st.sidebar:
     st.markdown("### 🏗️ Parameter Proyek")
@@ -125,7 +105,7 @@ with st.sidebar:
             upah_kenek = st.number_input("Upah Kenek/Hari", min_value=50000, max_value=500000, value=100000, step=10000)
 
 
-# ==================== FUNGSI PERHITUNGAN FULL LOGIC ====================
+# ==================== FUNGSI PERHITUNGAN ====================
 
 def hitung_cakar_ayam(panjang, lebar, lantai, ukuran_besi):
     if lantai == 1:
@@ -244,7 +224,7 @@ def hitung_dinding_presisi(layout, tinggi):
     }
 
 
-# ==================== MAIN PERHITUNGAN FULL ====================
+# ==================== MAIN PERHITUNGAN ====================
 layout = get_layout(panjang, lebar, kamar, km, ruang_tamu, dapur, garasi)
 keliling = 2 * (panjang + lebar)
 luas_bangunan = panjang * lebar
@@ -472,7 +452,7 @@ with col4:
     """, unsafe_allow_html=True)
 
 # TABS
-tabs = st.tabs(["📋 20 KOMPONEN", "💰 TABEL RAB", "📄 EXPORT PDF"])
+tabs = st.tabs(["📋 20 KOMPONEN", "💰 TABEL RAB", "📄 EXPORT DATA"])
 
 with tabs[0]:
     st.markdown("### 🛠️ Rincian 20 Komponen Material & Struktur")
@@ -545,6 +525,38 @@ with tabs[1]:
     df_rab = pd.DataFrame(rab_data)
     st.dataframe(df_rab, use_container_width=True, hide_index=True)
     
+    # Hitung total per komponen untuk ditampilkan
+    biaya_per_komponen = [
+        komponen_pondasi['semen']*65000 + komponen_pondasi['batu_belah']*250000,
+        komponen_sloof['semen']*65000 + komponen_sloof['besi_kg']*15000,
+        komponen_ring['semen']*65000 + komponen_ring['besi_kg']*15000,
+        komponen_struktur['beton']*1500000,
+        komponen_bekisting['triplek']*180000,
+        cakar['semen_sak']*65000 + cakar['besi_kg']*15000,
+        dinding['bata']*800,
+        dinding['semen_pasang']*65000 + dinding['semen_plester']*65000,
+        dinding['jumlah_pintu']*500000,
+        dinding['jumlah_jendela']*300000,
+        luas_atap*150000,
+        genteng*25000,
+        komponen_plafon['gypsum']*45000,
+        komponen_keramik['lantai']*90000,
+        komponen_cat['total']*35000,
+        komponen_listrik['lampu']*45000 + komponen_listrik['saklar']*25000,
+        km*800000 + km*8*50000,
+        3000000 if dapur>0 else 0,
+        kanopi*350000 + pagar*850000,
+        komponen_tenaga['biaya']
+    ]
+    
+    st.markdown("---")
+    st.markdown("### 💵 Estimasi Biaya per Komponen")
+    df_biaya = pd.DataFrame({
+        "Komponen": rab_data["Uraian Pekerjaan"],
+        "Estimasi Biaya": [f"Rp {x:,.0f}" for x in biaya_per_komponen]
+    })
+    st.dataframe(df_biaya, use_container_width=True, hide_index=True)
+    
     st.markdown("---")
     st.markdown(f"""
     <div style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 16px; padding: 25px; text-align: center;">
@@ -555,77 +567,85 @@ with tabs[1]:
     """, unsafe_allow_html=True)
 
 with tabs[2]:
-    st.markdown("### 📄 Export Laporan Professional")
-    st.info("Klik tombol di bawah untuk mengunduh laporan RAB dalam format PDF.")
+    st.markdown("### 📄 Export Data")
+    st.info("📊 Export data dalam format CSV atau JSON untuk dokumentasi")
     
-    if st.button("📑 Generate Laporan PDF", use_container_width=True):
-        pdf = RAB_PDF('P', 'mm', 'A4')
-        pdf.add_page()
+    # Data export lengkap
+    export_full_data = {
+        'timestamp': datetime.now().isoformat(),
+        'input_parameter': {
+            'panjang': panjang, 'lebar': lebar, 'tinggi': tinggi, 'lantai': lantai,
+            'kamar': kamar, 'km': km, 'ruang_tamu': ruang_tamu, 'dapur': dapur, 'garasi': garasi,
+            'jenis_atap': jenis_atap, 'rangka_atap': rangka_atap, 'jenis_bata': jenis_bata,
+            'ukuran_besi': ukuran_besi, 'upah_tukang': upah_tukang, 'upah_kenek': upah_kenek,
+            'kanopi': kanopi, 'pagar': pagar
+        },
+        'hasil_perhitungan': {
+            'luas_bangunan': luas_bangunan,
+            'luas_total': luas_total,
+            'total_semen': total_semen,
+            'total_pasir': total_pasir,
+            'total_split': total_split,
+            'total_besi': total_besi,
+            'estimasi_hari': hari,
+            'total_biaya': total_biaya
+        },
+        'detail_20_komponen': {
+            'pondasi': komponen_pondasi,
+            'sloof': komponen_sloof,
+            'ring_balok': komponen_ring,
+            'total_struktur': komponen_struktur,
+            'bekisting': komponen_bekisting,
+            'cakar_ayam': cakar,
+            'dinding': dinding,
+            'atap': {'luas': luas_atap, 'genteng': genteng},
+            'rangka_atap': komponen_rangka,
+            'plafon': komponen_plafon,
+            'keramik': komponen_keramik,
+            'listrik': komponen_listrik,
+            'kamar_mandi': komponen_km,
+            'dapur': komponen_dapur,
+            'cat': komponen_cat,
+            'tenaga_kerja': komponen_tenaga
+        }
+    }
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Export CSV
+        df_export = pd.DataFrame([{
+            'Tanggal': datetime.now().strftime('%Y-%m-%d'),
+            'Panjang': panjang, 'Lebar': lebar, 'Tinggi': tinggi, 'Lantai': lantai,
+            'Luas_Bangunan': luas_bangunan, 'Total_Semen': total_semen,
+            'Total_Pasir': total_pasir, 'Total_Split': total_split,
+            'Total_Besi': total_besi, 'Hari_Kerja': hari,
+            'Total_Biaya': total_biaya
+        }])
         
-        # Info Proyek
-        pdf.set_font("Arial", "B", 14)
-        pdf.set_text_color(16, 185, 129)
-        pdf.cell(0, 10, "LAPORAN RENCANA ANGGARAN BIAYA (RAB)", 0, 1, 'C')
-        pdf.set_font("Arial", "", 10)
-        pdf.set_text_color(0, 0, 0)
-        pdf.ln(5)
-        
-        pdf.set_font("Arial", "B", 11)
-        pdf.set_text_color(100, 100, 100)
-        pdf.cell(0, 8, "DATA PROYEK", 0, 1)
-        pdf.set_font("Arial", "", 10)
-        pdf.cell(0, 6, f"Tanggal: {datetime.now().strftime('%d/%m/%Y %H:%M')}", 0, 1)
-        pdf.cell(0, 6, f"Lokasi Proyek: Jakarta", 0, 1)
-        pdf.cell(0, 6, f"Dimensi: {panjang} m x {lebar} m ({lantai} Lantai)", 0, 1)
-        pdf.cell(0, 6, f"Luas Bangunan: {luas_bangunan} m²", 0, 1)
-        pdf.ln(5)
-        
-        # Rincian Material
-        pdf.set_font("Arial", "B", 11)
-        pdf.cell(0, 8, "RINCIAN MATERIAL UTAMA", 0, 1)
-        pdf.set_font("Arial", "", 10)
-        pdf.cell(0, 6, f"- Batu Bata: {dinding['bata']:,} pcs", 0, 1)
-        pdf.cell(0, 6, f"- Semen: {total_semen} sak", 0, 1)
-        pdf.cell(0, 6, f"- Pasir: {total_pasir:.2f} m³", 0, 1)
-        pdf.cell(0, 6, f"- Split: {total_split:.2f} m³", 0, 1)
-        pdf.cell(0, 6, f"- Besi Struktur: {total_besi:.1f} kg", 0, 1)
-        pdf.cell(0, 6, f"- Genteng: {genteng:,} pcs", 0, 1)
-        pdf.cell(0, 6, f"- Keramik Lantai: {komponen_keramik['lantai']} m²", 0, 1)
-        pdf.cell(0, 6, f"- Cat: {komponen_cat['total']} liter", 0, 1)
-        pdf.ln(5)
-        
-        # Tenaga Kerja
-        pdf.set_font("Arial", "B", 11)
-        pdf.cell(0, 8, "TENAGA KERJA", 0, 1)
-        pdf.set_font("Arial", "", 10)
-        pdf.cell(0, 6, f"- Tukang: {komponen_tenaga['tukang']} orang x {hari} hari", 0, 1)
-        pdf.cell(0, 6, f"- Kenek: {komponen_tenaga['kenek']} orang x {hari} hari", 0, 1)
-        pdf.cell(0, 6, f"- Upah Tukang/Hari: Rp {upah_tukang:,.0f}", 0, 1)
-        pdf.cell(0, 6, f"- Upah Kenek/Hari: Rp {upah_kenek:,.0f}", 0, 1)
-        pdf.ln(5)
-        
-        # Total
-        pdf.set_font("Arial", "B", 14)
-        pdf.set_text_color(16, 185, 129)
-        pdf.cell(0, 12, f"TOTAL RAB: Rp {total_biaya:,.0f}", 1, 1, 'C')
-        
-        # Footer note
-        pdf.set_y(-30)
-        pdf.set_font("Arial", "I", 8)
-        pdf.set_text_color(128, 128, 128)
-        pdf.cell(0, 10, "*Estimasi biaya material dan upah berdasarkan harga pasar saat ini", 0, 0, 'C')
-        
-        # Simpan PDF
-        pdf_output = pdf.output(dest='S').encode('latin-1')
-        
-        st.success("✅ PDF Berhasil Digenerate!")
+        csv = df_export.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="📥 Download PDF Sekarang",
-            data=pdf_output,
-            file_name=f"RAB_ARKI_{datetime.now().strftime('%Y%m%d')}.pdf",
-            mime="application/pdf",
+            label="📥 Download CSV",
+            data=csv,
+            file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.csv",
+            mime="text/csv",
             use_container_width=True
         )
+    
+    with col2:
+        # Export JSON
+        json_str = json.dumps(export_full_data, indent=2, default=str)
+        st.download_button(
+            label="📥 Download JSON (Lengkap)",
+            data=json_str,
+            file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.json",
+            mime="application/json",
+            use_container_width=True
+        )
+    
+    st.markdown("---")
+    st.markdown("### 📋 Preview Data Export (JSON)")
+    st.json(export_full_data, expanded=False)
 
 # Footer
 st.markdown("""
