@@ -1,4 +1,30 @@
-# app.py - ARKIDIGITAL ESTIMATOR PRO (Login + Premium Access WhatsApp)
+import streamlit as st
+
+# 1. WAJIB DI BARIS PALING ATAS (Konfigurasi Sistem)
+st.set_page_config(
+    page_title="ARKI ESTIMATOR PRO",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# 2. KODE PENUTUP LAYAR (Menghilangkan Header & Gap Putih)
+st.markdown("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stAppDeployButton {display:none;}
+    [data-testid="stStatusWidget"] {display:none;}
+    
+    /* Menghilangkan padding agar konten benar-benar menempel ke atas layar */
+    .main .block-container {
+        padding-top: 0rem !important;
+        padding-bottom: 0rem !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+## app.py - ARKIDIGITAL ESTIMATOR PRO (Login + Premium Access WhatsApp)
 
 import streamlit as st
 import math
