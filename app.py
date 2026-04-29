@@ -1,4 +1,34 @@
-# app.py - ARKI ESTIMATOR PRO (MODERN DESIGN - TANPA FPDF)
+
+import streamlit as st
+
+# Kode sakti untuk full screen & tanpa atribut Streamlit
+hide_st_style = """
+            <style>
+            /* Menghilangkan Main Menu (tiga garis di kanan atas) */
+            #MainMenu {visibility: hidden;}
+            
+            /* Menghilangkan Header transparan bawaan */
+            header {visibility: hidden;}
+            
+            /* Menghilangkan Footer "Made with Streamlit" */
+            footer {visibility: hidden;}
+            
+            /* Menghilangkan tombol 'Deploy' di versi terbaru */
+            .stAppDeployButton {display:none;}
+
+            /* MENGHILANGKAN JARAK PUTIH DI ATAS (Sangat Penting) */
+            .block-container {
+                padding-top: 0rem !important;
+                padding-bottom: 0rem !important;
+            }
+            
+            /* Menghilangkan status bar saat proses running */
+            [data-testid="stStatusWidget"] {display:none;}
+            </style>
+            """
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+# app.py - ARKI ESTIMATOR PRO (MODERN WHITE DESIGN)
 
 import streamlit as st
 import math
@@ -11,99 +41,167 @@ st.set_page_config(
     page_title="ARKI ESTIMATOR PRO",
     page_icon="🏗️",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# ==================== MODERN UI CSS ====================
+# ==================== MODERN CSS ====================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap');
+    /* Import Font Modern */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
     
-    html, body, [class*="css"] { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .stApp { background-color: #0f172a; }
+    * {
+        font-family: 'Inter', sans-serif !important;
+    }
     
-    .main-card {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Main background putih */
+    .stApp {
+        background-color: #ffffff !important;
+    }
+    
+    /* Header utama */
+    .hero-header {
+        background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+        padding: 28px 32px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.15);
+    }
+    
+    /* Sidebar styled modern */
+    .sidebar-modern {
+        background-color: #f8fafc;
         border-radius: 20px;
         padding: 20px;
-        margin-bottom: 15px;
-        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+        border: 1px solid #e2e8f0;
     }
     
-    .hero-header {
-        background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-        padding: 30px;
-        border-radius: 24px;
-        text-align: center;
-        margin-bottom: 25px;
-        box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
-    }
-
-    .component-badge {
-        background: #1e293b;
-        color: #10b981;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: bold;
-        border: 1px solid #10b981;
-    }
-    
+    /* Cards untuk metrics */
     .metric-card {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
         border-radius: 16px;
-        padding: 15px;
+        padding: 20px;
         text-align: center;
-        border: 1px solid rgba(16, 185, 129, 0.3);
+        border: 1px solid #bfdbfe;
+        transition: transform 0.2s;
     }
-
-    /* Mobile Responsive */
-    @media (max-width: 768px) {
-        div[data-testid="column"] { width: 100% !important; flex: 1 1 100% !important; }
+    .metric-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.1);
+    }
+    
+    /* Tabel Modern */
+    .modern-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .modern-table th {
+        background-color: #1e40af;
+        color: white;
+        padding: 12px 16px;
+        font-weight: 600;
+        font-size: 13px;
+    }
+    .modern-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #e2e8f0;
+        color: #1e293b;
+        font-size: 13px;
+    }
+    .modern-table tr:hover td {
+        background-color: #f1f5f9;
+    }
+    
+    /* Expander modern */
+    .streamlit-expanderHeader {
+        background-color: #f8fafc;
+        border-radius: 12px;
+        border: 1px solid #e2e8f0;
+        font-weight: 600;
+        color: #1e40af;
+    }
+    
+    /* Divider */
+    .custom-divider {
+        height: 2px;
+        background: linear-gradient(90deg, #2563eb, #93c5fd, #2563eb);
+        margin: 20px 0;
+        border-radius: 2px;
+    }
+    
+    /* Input styling */
+    .stNumberInput input, .stSelectbox select {
+        border-radius: 10px !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+    
+    /* Title */
+    h1, h2, h3 {
+        color: #1e293b !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Expander content */
+    .streamlit-expanderContent {
+        background-color: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 12px 12px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ==================== SIDEBAR INPUT ====================
-with st.sidebar:
-    st.markdown("### 🏗️ Parameter Proyek")
-    panjang = st.number_input("Panjang (m)", min_value=5.0, max_value=50.0, value=10.0, step=0.5)
-    lebar = st.number_input("Lebar (m)", min_value=5.0, max_value=50.0, value=8.0, step=0.5)
-    tinggi = st.number_input("Tinggi Dinding (m)", min_value=2.5, max_value=5.0, value=3.5, step=0.1)
-    lantai = st.select_slider("Jumlah Lantai", options=[1, 2, 3, 4, 5], value=1)
-    
-    with st.expander("🛏️ Ruangan & Fasilitas"):
-        col1, col2 = st.columns(2)
-        with col1:
-            kamar = st.number_input("Kamar Tidur", min_value=0, max_value=10, value=3)
-            ruang_tamu = st.number_input("Ruang Tamu", min_value=0, max_value=3, value=1)
-        with col2:
-            km = st.number_input("Kamar Mandi", min_value=0, max_value=5, value=2)
-            dapur = st.number_input("Dapur", min_value=0, max_value=2, value=1)
-        garasi = st.number_input("Garasi", min_value=0, max_value=2, value=0)
-        kanopi = st.number_input("Kanopi (m²)", min_value=0, max_value=100, value=0)
-        pagar = st.number_input("Pagar (m)", min_value=0, max_value=100, value=0)
+# ==================== HEADER ====================
+st.markdown("""
+<div class="hero-header">
+    <h1 style="color: white; margin: 0; font-size: 28px; font-weight: 700;">🏗️ ARKI ESTIMATOR PRO</h1>
+    <p style="color: #dbeafe; margin: 8px 0 0 0; font-size: 14px;">Kalkulator Konstruksi Presisi | 20 Komponen Lengkap</p>
+</div>
+""", unsafe_allow_html=True)
 
-    with st.expander("🛠️ Material & Spek"):
-        col1, col2 = st.columns(2)
-        with col1:
-            jenis_atap = st.selectbox("Jenis Atap", ["metal", "tanah", "beton"], 
-                                       format_func=lambda x: "Metal" if x=="metal" else "Tanah" if x=="tanah" else "Beton")
-            rangka_atap = st.selectbox("Rangka Atap", ["baja", "kayu"],
-                                        format_func=lambda x: "Baja Ringan" if x=="baja" else "Kayu")
-        with col2:
-            jenis_bata = st.selectbox("Jenis Bata", ["merah", "hebel"],
-                                       format_func=lambda x: "Bata Merah" if x=="merah" else "Bata Ringan")
-            ukuran_besi = st.selectbox("Ukuran Besi", [10, 13, 16], format_func=lambda x: f"Ø{x} mm")
-    
-    with st.expander("👷 Tenaga Kerja"):
-        col1, col2 = st.columns(2)
-        with col1:
-            upah_tukang = st.number_input("Upah Tukang/Hari", min_value=50000, max_value=500000, value=150000, step=10000)
-        with col2:
-            upah_kenek = st.number_input("Upah Kenek/Hari", min_value=50000, max_value=500000, value=100000, step=10000)
+# ==================== SIDEBAR INPUT DI DASHBOARD UTAMA ====================
+st.markdown("### 📐 Input Data Proyek")
 
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.markdown("**🏠 Dimensi Bangunan**")
+    panjang = st.number_input("Panjang (m)", min_value=5.0, max_value=50.0, value=10.0, step=0.5, key="panjang")
+    lebar = st.number_input("Lebar (m)", min_value=5.0, max_value=50.0, value=8.0, step=0.5, key="lebar")
+    tinggi = st.number_input("Tinggi Dinding (m)", min_value=2.5, max_value=5.0, value=3.5, step=0.1, key="tinggi")
+    lantai = st.select_slider("Jumlah Lantai", options=[1, 2, 3, 4, 5], value=1, key="lantai")
+
+with col2:
+    st.markdown("**🛏️ Ruangan**")
+    kamar = st.number_input("Kamar Tidur", min_value=0, max_value=10, value=3, step=1, key="kamar")
+    km = st.number_input("Kamar Mandi", min_value=0, max_value=5, value=2, step=1, key="km")
+    ruang_tamu = st.number_input("Ruang Tamu", min_value=0, max_value=3, value=1, step=1, key="ruang_tamu")
+    dapur = st.number_input("Dapur", min_value=0, max_value=2, value=1, step=1, key="dapur")
+
+with col3:
+    st.markdown("**🔧 Material & Spek**")
+    jenis_atap = st.selectbox("Jenis Atap", ["metal", "tanah", "beton"], 
+                               format_func=lambda x: "Metal" if x=="metal" else "Tanah" if x=="tanah" else "Beton", key="atap")
+    rangka_atap = st.selectbox("Rangka Atap", ["baja", "kayu"],
+                                format_func=lambda x: "Baja Ringan" if x=="baja" else "Kayu", key="rangka")
+    jenis_bata = st.selectbox("Jenis Bata", ["merah", "hebel"],
+                               format_func=lambda x: "Bata Merah" if x=="merah" else "Bata Ringan", key="bata")
+    ukuran_besi = st.selectbox("Ukuran Besi", [10, 13, 16], format_func=lambda x: f"Ø{x} mm", key="besi")
+
+with col4:
+    st.markdown("**👷 Tenaga & Opsional**")
+    upah_tukang = st.number_input("Upah Tukang/Hari", min_value=50000, max_value=500000, value=150000, step=10000, key="upah_tukang")
+    upah_kenek = st.number_input("Upah Kenek/Hari", min_value=50000, max_value=500000, value=100000, step=10000, key="upah_kenek")
+    garasi = st.number_input("Garasi", min_value=0, max_value=2, value=0, step=1, key="garasi")
+    kanopi = st.number_input("Kanopi (m²)", min_value=0, max_value=100, value=0, step=1, key="kanopi")
+    pagar = st.number_input("Pagar (m)", min_value=0, max_value=100, value=0, step=1, key="pagar")
+
+st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
 # ==================== FUNGSI PERHITUNGAN ====================
 
@@ -360,13 +458,13 @@ komponen_pintu = {'jumlah': dinding['jumlah_pintu'], 'biaya': dinding['jumlah_pi
 # KOMPONEN 18: JENDELA
 komponen_jendela = {'jumlah': dinding['jumlah_jendela'], 'biaya': dinding['jumlah_jendela'] * 300000}
 
-# KOMPONEN 19: KANOPI
+# KOMPONEN 19: OPSIONAL - KANOPI
 komponen_kanopi = {'luas': kanopi, 'biaya': kanopi * 350000}
 
-# KOMPONEN 20: PAGAR
+# KOMPONEN 20: OPSIONAL - PAGAR
 komponen_pagar = {'panjang': pagar, 'biaya': pagar * 850000}
 
-# TOTAL REKAP MATERIAL
+# TOTAL REKAP
 total_semen = (komponen_pondasi['semen'] + komponen_struktur['semen'] + 
                cakar['semen_sak'] + dinding['semen_pasang'] + 
                dinding['semen_plester'] + komponen_keramik['semen'])
@@ -376,7 +474,7 @@ total_pasir = (komponen_pondasi['pasir'] + komponen_struktur['pasir'] +
 total_split = komponen_struktur['split'] + cakar['split_m3']
 total_besi = komponen_struktur['besi_kg'] + cakar['besi_kg']
 
-# TOTAL BIAYA RAB
+# TOTAL BIAYA
 harga = {
     'semen': 65000, 'pasir': 300000, 'split': 320000, 'bata': 800, 'besi': 15000,
     'triplek': 180000, 'kaso': 25000, 'paku': 18000, 'genteng_metal': 25000,
@@ -412,245 +510,304 @@ total_biaya = (total_semen * harga['semen']) + \
               komponen_tenaga['biaya']
 
 
-# ==================== MAIN DISPLAY MODERN ====================
-st.markdown("""
-<div class="hero-header">
-    <h1 style="color: white; margin:0; font-size: 28px;">🏗️ ARKI ESTIMATOR PRO</h1>
-    <p style="color: #d1fae5; margin:5px 0 0 0;">Kalkulator Konstruksi Presisi - 20 Komponen Lengkap</p>
-</div>
-""", unsafe_allow_html=True)
+# ==================== TAMPILAN METRIK ====================
+st.markdown("### 📊 Ringkasan Proyek")
 
-# Top Summary Metrics Modern
 col1, col2, col3, col4 = st.columns(4)
+
 with col1:
     st.markdown(f"""
     <div class="metric-card">
-        <p style="color:#94a3b8; font-size:12px; margin:0;">TOTAL ESTIMASI</p>
-        <h3 style="color:#10b981; margin:0;">Rp {total_biaya:,.0f}</h3>
+        <p style="color:#475569; font-size:13px; margin:0;">🏠 Luas Bangunan</p>
+        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{luas_bangunan} m²</h3>
     </div>
     """, unsafe_allow_html=True)
+
 with col2:
     st.markdown(f"""
     <div class="metric-card">
-        <p style="color:#94a3b8; font-size:12px; margin:0;">LUAS TOTAL</p>
-        <h3 style="color:white; margin:0;">{luas_total} m²</h3>
+        <p style="color:#475569; font-size:13px; margin:0;">🦶 Cakar Ayam</p>
+        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{cakar['jumlah_titik']} titik</h3>
     </div>
     """, unsafe_allow_html=True)
+
 with col3:
     st.markdown(f"""
     <div class="metric-card">
-        <p style="color:#94a3b8; font-size:12px; margin:0;">WAKTU KERJA</p>
-        <h3 style="color:white; margin:0;">{hari} Hari</h3>
+        <p style="color:#475569; font-size:13px; margin:0;">📅 Estimasi Waktu</p>
+        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">{hari} hari</h3>
     </div>
     """, unsafe_allow_html=True)
+
 with col4:
     st.markdown(f"""
     <div class="metric-card">
-        <p style="color:#94a3b8; font-size:12px; margin:0;">CAKAR AYAM</p>
-        <h3 style="color:white; margin:0;">{cakar['jumlah_titik']} Titik</h3>
+        <p style="color:#475569; font-size:13px; margin:0;">💰 Total RAB</p>
+        <h3 style="color:#1e40af; margin:8px 0 0 0; font-size:28px;">Rp {total_biaya:,.0f}</h3>
     </div>
     """, unsafe_allow_html=True)
 
-# TABS
-tabs = st.tabs(["📋 20 KOMPONEN", "💰 TABEL RAB", "📄 EXPORT DATA"])
+st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
 
-with tabs[0]:
-    st.markdown("### 🛠️ Rincian 20 Komponen Material & Struktur")
-    
-    col_left, col_right = st.columns(2)
-    
-    with col_left:
-        with st.expander("💎 1-5: STRUKTUR UTAMA", expanded=True):
-            st.markdown(f"**1. Pondasi Batu Kali** → {komponen_pondasi['volume']} m³ (Semen: {komponen_pondasi['semen']} sak)")
-            st.markdown(f"**2. Sloof (20x25)** → {komponen_sloof['volume']} m³ (Besi: {komponen_sloof['besi_kg']} kg)")
-            st.markdown(f"**3. Ring Balok** → {komponen_ring['volume']} m³ (Besi: {komponen_ring['besi_kg']} kg)")
-            st.markdown(f"**4. Cakar Ayam** → {cakar['jumlah_titik']} Titik, {cakar['jarak']}")
-            st.markdown(f"**5. Bekisting** → {komponen_bekisting['triplek']} lbr triplek + {komponen_bekisting['kaso']} batang kaso")
+# ==================== TABEL 20 KOMPONEN ====================
+st.markdown("### 📋 Rincian 20 Komponen")
 
-        with st.expander("🧱 6-10: DINDING & BUKAAN"):
-            st.markdown(f"**6. Bata {jenis_bata.upper()}** → {dinding['bata']:,} pcs")
-            st.markdown(f"**7. Semen Pasang** → {dinding['semen_pasang']} sak")
-            st.markdown(f"**8. Semen Plester** → {dinding['semen_plester']} sak")
-            st.markdown(f"**9. Pintu** → {dinding['jumlah_pintu']} unit")
-            st.markdown(f"**10. Jendela** → {dinding['jumlah_jendela']} unit")
+# Membuat data untuk tabel 20 komponen
+komponen_data = []
 
-        with st.expander("🏠 11-15: ATAP & FINISHING"):
-            st.markdown(f"**11. Rangka Atap {komponen_rangka['jenis']}** → {luas_atap} m²")
-            st.markdown(f"**12. Genteng {jenis_atap.upper()}** → {genteng:,} pcs")
-            st.markdown(f"**13. Plafon Gypsum** → {komponen_plafon['gypsum']} lembar")
-            st.markdown(f"**14. Keramik Lantai** → {komponen_keramik['lantai']} m²")
-            st.markdown(f"**15. Cat** → {komponen_cat['total']} liter")
-    
-    with col_right:
-        with st.expander("⚡ 16-20: MEKANIKAL & ELEKTRIKAL"):
-            st.markdown(f"**16. Instalasi Listrik** → {komponen_listrik['lampu']} titik lampu")
-            st.markdown(f"**17. Kabel** → {komponen_listrik['kabel']} meter")
-            st.markdown(f"**18. Sanitasi** → {komponen_km['closet']} closet, {komponen_km['wastafel']} wastafel")
-            st.markdown(f"**19. Kanopi** → {kanopi} m²")
-            st.markdown(f"**20. Tenaga Kerja** → {komponen_tenaga['tukang']} tukang + {komponen_tenaga['kenek']} kenek")
+# 1. Pondasi Batu Kali
+komponen_data.append({
+    "No": 1, "Komponen": "Pondasi Batu Kali", 
+    "Volume/Satuan": f"{komponen_pondasi['volume']} m³",
+    "Detail Material": f"Batu: {komponen_pondasi['batu_belah']} m³, Semen: {komponen_pondasi['semen']} sak, Pasir: {komponen_pondasi['pasir']} m³",
+    "Estimasi Biaya": f"Rp {komponen_pondasi['semen']*65000 + komponen_pondasi['batu_belah']*250000:,.0f}"
+})
 
-    st.markdown("---")
-    st.markdown("### 📊 Ringkasan Material Utama")
-    col_a, col_b, col_c, col_d = st.columns(4)
-    with col_a:
-        st.metric("Total Semen", f"{total_semen} sak")
-    with col_b:
-        st.metric("Total Pasir", f"{total_pasir:.2f} m³")
-    with col_c:
-        st.metric("Total Split", f"{total_split:.2f} m³")
-    with col_d:
-        st.metric("Total Besi", f"{total_besi:.1f} kg")
+# 2. Sloof
+komponen_data.append({
+    "No": 2, "Komponen": "Sloof (20x25 cm)", 
+    "Volume/Satuan": f"{komponen_sloof['volume']} m³",
+    "Detail Material": f"Semen: {komponen_sloof['semen']} sak, Pasir: {komponen_sloof['pasir']} m³, Split: {komponen_sloof['split']} m³, Besi: {komponen_sloof['besi_kg']} kg",
+    "Estimasi Biaya": f"Rp {komponen_sloof['semen']*65000 + komponen_sloof['besi_kg']*15000:,.0f}"
+})
 
-with tabs[1]:
-    st.markdown("### 💰 Rencana Anggaran Biaya (RAB)")
-    
-    rab_data = {
-        "No": list(range(1, 21)),
-        "Uraian Pekerjaan": [
-            "1. Pondasi Batu Kali", "2. Sloof", "3. Ring Balok", "4. Total Struktur", "5. Bekisting",
-            "6. Cakar Ayam", "7. Dinding Bata", "8. Plesteran & Acian", "9. Pintu", "10. Jendela",
-            "11. Rangka Atap", "12. Genteng", "13. Plafon", "14. Keramik", "15. Cat",
-            "16. Listrik", "17. Sanitasi", "18. Dapur", "19. Kanopi & Pagar", "20. Tenaga Kerja"
-        ],
-        "Volume": [
-            f"{komponen_pondasi['volume']} m³", f"{komponen_sloof['volume']} m³", f"{komponen_ring['volume']} m³",
-            f"{komponen_struktur['beton']} m³", f"{luas_bekisting:.1f} m²", f"{cakar['jumlah_titik']} titik",
-            f"{dinding['bata']} pcs", f"{dinding['luas_bersih']} m²", f"{dinding['jumlah_pintu']} unit",
-            f"{dinding['jumlah_jendela']} unit", f"{luas_atap} m²", f"{genteng} pcs",
-            f"{komponen_plafon['gypsum']} lbr", f"{komponen_keramik['lantai']} m²", f"{komponen_cat['total']} ltr",
-            f"{komponen_listrik['lampu']} titik", f"{km} unit", "1 set", f"{kanopi+pagar} m²", f"{hari} hari"
-        ]
+# 3. Ring Balok
+komponen_data.append({
+    "No": 3, "Komponen": "Ring Balok (15x20 cm)", 
+    "Volume/Satuan": f"{komponen_ring['volume']} m³",
+    "Detail Material": f"Semen: {komponen_ring['semen']} sak, Pasir: {komponen_ring['pasir']} m³, Split: {komponen_ring['split']} m³, Besi: {komponen_ring['besi_kg']} kg",
+    "Estimasi Biaya": f"Rp {komponen_ring['semen']*65000 + komponen_ring['besi_kg']*15000:,.0f}"
+})
+
+# 4. Total Struktur
+komponen_data.append({
+    "No": 4, "Komponen": "Total Struktur Beton", 
+    "Volume/Satuan": f"{komponen_struktur['beton']} m³",
+    "Detail Material": f"Semen: {komponen_struktur['semen']} sak, Besi: {komponen_struktur['besi_kg']} kg ({komponen_struktur['besi_batang']} batang)",
+    "Estimasi Biaya": f"Rp {komponen_struktur['beton']*1500000:,.0f}"
+})
+
+# 5. Bekisting
+komponen_data.append({
+    "No": 5, "Komponen": "Bekisting", 
+    "Volume/Satuan": f"{luas_bekisting:.1f} m²",
+    "Detail Material": f"Triplek: {komponen_bekisting['triplek']} lbr, Kaso: {komponen_bekisting['kaso']} btg, Paku: {komponen_bekisting['paku']} kg",
+    "Estimasi Biaya": f"Rp {komponen_bekisting['triplek']*180000:,.0f}"
+})
+
+# 6. Cakar Ayam
+komponen_data.append({
+    "No": 6, "Komponen": "Cakar Ayam", 
+    "Volume/Satuan": f"{cakar['jumlah_titik']} titik ({cakar['jarak']})",
+    "Detail Material": f"Volume: {cakar['volume_m3']} m³, Semen: {cakar['semen_sak']} sak, Besi: {cakar['besi_kg']} kg",
+    "Estimasi Biaya": f"Rp {cakar['semen_sak']*65000 + cakar['besi_kg']*15000:,.0f}"
+})
+
+# 7. Dinding Bata
+komponen_data.append({
+    "No": 7, "Komponen": "Dinding Bata", 
+    "Volume/Satuan": f"{dinding['luas_bersih']} m²",
+    "Detail Material": f"Bata: {dinding['bata']:,} pcs, Semen: {dinding['semen_pasang']} sak",
+    "Estimasi Biaya": f"Rp {dinding['bata']*800:,.0f}"
+})
+
+# 8. Plesteran & Acian
+komponen_data.append({
+    "No": 8, "Komponen": "Plesteran + Acian", 
+    "Volume/Satuan": f"{dinding['luas_bersih']*2:.0f} m²",
+    "Detail Material": f"Semen Plester: {dinding['semen_plester']} sak, Semen Acian: {dinding['acian']} sak",
+    "Estimasi Biaya": f"Rp {(dinding['semen_plester'] + dinding['acian'])*65000:,.0f}"
+})
+
+# 9. Pintu
+komponen_data.append({
+    "No": 9, "Komponen": "Pintu", 
+    "Volume/Satuan": f"{dinding['jumlah_pintu']} unit",
+    "Detail Material": "Pintu standar + kusen",
+    "Estimasi Biaya": f"Rp {dinding['jumlah_pintu']*500000:,.0f}"
+})
+
+# 10. Jendela
+komponen_data.append({
+    "No": 10, "Komponen": "Jendela", 
+    "Volume/Satuan": f"{dinding['jumlah_jendela']} unit",
+    "Detail Material": "Jendela standar + kusen",
+    "Estimasi Biaya": f"Rp {dinding['jumlah_jendela']*300000:,.0f}"
+})
+
+# 11. Rangka Atap
+komponen_data.append({
+    "No": 11, "Komponen": f"Rangka Atap ({komponen_rangka['jenis']})", 
+    "Volume/Satuan": f"{luas_atap} m²",
+    "Detail Material": f"Luas atap: {luas_atap} m²",
+    "Estimasi Biaya": f"Rp {luas_atap*150000:,.0f}"
+})
+
+# 12. Genteng
+komponen_data.append({
+    "No": 12, "Komponen": f"Genteng {jenis_atap.title()}", 
+    "Volume/Satuan": f"{genteng} pcs",
+    "Detail Material": f"Kebutuhan genteng untuk luas atap {luas_atap} m²",
+    "Estimasi Biaya": f"Rp {genteng*25000:,.0f}"
+})
+
+# 13. Plafon
+komponen_data.append({
+    "No": 13, "Komponen": "Plafon Gypsum", 
+    "Volume/Satuan": f"{komponen_plafon['gypsum']} lbr",
+    "Detail Material": f"Hollow: {komponen_plafon['hollow']} btg, List: {komponen_plafon['list']} m",
+    "Estimasi Biaya": f"Rp {komponen_plafon['gypsum']*45000:,.0f}"
+})
+
+# 14. Keramik
+komponen_data.append({
+    "No": 14, "Komponen": "Keramik Lantai", 
+    "Volume/Satuan": f"{komponen_keramik['lantai']} m²",
+    "Detail Material": f"Keramik lantai + dinding KM: {komponen_keramik['dinding_km']} m²",
+    "Estimasi Biaya": f"Rp {komponen_keramik['lantai']*90000:,.0f}"
+})
+
+# 15. Cat
+komponen_data.append({
+    "No": 15, "Komponen": "Cat Dinding & Plafon", 
+    "Volume/Satuan": f"{komponen_cat['total']} liter",
+    "Detail Material": f"Cat tembok: {komponen_cat['tembok']} ltr, Cat plafon: {komponen_cat['plafon']} ltr",
+    "Estimasi Biaya": f"Rp {komponen_cat['total']*35000:,.0f}"
+})
+
+# 16. Instalasi Listrik
+komponen_data.append({
+    "No": 16, "Komponen": "Instalasi Listrik", 
+    "Volume/Satuan": f"{komponen_listrik['lampu']} titik",
+    "Detail Material": f"Saklar: {komponen_listrik['saklar']}, Kabel: {komponen_listrik['kabel']} m, MCB: {komponen_listrik['mcb']} A",
+    "Estimasi Biaya": f"Rp {(komponen_listrik['lampu']*45000) + (komponen_listrik['saklar']*25000):,.0f}"
+})
+
+# 17. Sanitasi
+komponen_data.append({
+    "No": 17, "Komponen": "Sanitasi (KM)", 
+    "Volume/Satuan": f"{km} unit",
+    "Detail Material": f"Closet: {komponen_km['closet']}, Pipa: {komponen_km['pipa']} m, Wastafel: {komponen_km['wastafel']}",
+    "Estimasi Biaya": f"Rp {(km*800000) + (km*8*50000):,.0f}"
+})
+
+# 18. Dapur
+komponen_data.append({
+    "No": 18, "Komponen": "Kitchen Set", 
+    "Volume/Satuan": "1 set" if dapur > 0 else "-",
+    "Detail Material": "Kitchen set standar + kompor",
+    "Estimasi Biaya": f"Rp {3000000 if dapur > 0 else 0:,.0f}"
+})
+
+# 19. Kanopi
+komponen_data.append({
+    "No": 19, "Komponen": "Kanopi", 
+    "Volume/Satuan": f"{kanopi} m²",
+    "Detail Material": "Kanopi baja ringan + atap polycarbonate",
+    "Estimasi Biaya": f"Rp {kanopi*350000:,.0f}"
+})
+
+# 20. Pagar
+komponen_data.append({
+    "No": 20, "Komponen": "Pagar", 
+    "Volume/Satuan": f"{pagar} m",
+    "Detail Material": "Pagar besi minimalis + cat",
+    "Estimasi Biaya": f"Rp {pagar*850000:,.0f}"
+})
+
+# Menampilkan tabel
+df_komponen = pd.DataFrame(komponen_data)
+st.dataframe(
+    df_komponen,
+    use_container_width=True,
+    hide_index=True,
+    column_config={
+        "No": st.column_config.NumberColumn("No", width="small"),
+        "Komponen": st.column_config.TextColumn("Komponen", width="medium"),
+        "Volume/Satuan": st.column_config.TextColumn("Volume / Satuan", width="small"),
+        "Detail Material": st.column_config.TextColumn("Detail Material", width="large"),
+        "Estimasi Biaya": st.column_config.TextColumn("Estimasi Biaya", width="medium")
     }
-    
-    df_rab = pd.DataFrame(rab_data)
-    st.dataframe(df_rab, use_container_width=True, hide_index=True)
-    
-    # Hitung total per komponen untuk ditampilkan
-    biaya_per_komponen = [
-        komponen_pondasi['semen']*65000 + komponen_pondasi['batu_belah']*250000,
-        komponen_sloof['semen']*65000 + komponen_sloof['besi_kg']*15000,
-        komponen_ring['semen']*65000 + komponen_ring['besi_kg']*15000,
-        komponen_struktur['beton']*1500000,
-        komponen_bekisting['triplek']*180000,
-        cakar['semen_sak']*65000 + cakar['besi_kg']*15000,
-        dinding['bata']*800,
-        dinding['semen_pasang']*65000 + dinding['semen_plester']*65000,
-        dinding['jumlah_pintu']*500000,
-        dinding['jumlah_jendela']*300000,
-        luas_atap*150000,
-        genteng*25000,
-        komponen_plafon['gypsum']*45000,
-        komponen_keramik['lantai']*90000,
-        komponen_cat['total']*35000,
-        komponen_listrik['lampu']*45000 + komponen_listrik['saklar']*25000,
-        km*800000 + km*8*50000,
-        3000000 if dapur>0 else 0,
-        kanopi*350000 + pagar*850000,
-        komponen_tenaga['biaya']
-    ]
-    
-    st.markdown("---")
-    st.markdown("### 💵 Estimasi Biaya per Komponen")
-    df_biaya = pd.DataFrame({
-        "Komponen": rab_data["Uraian Pekerjaan"],
-        "Estimasi Biaya": [f"Rp {x:,.0f}" for x in biaya_per_komponen]
-    })
-    st.dataframe(df_biaya, use_container_width=True, hide_index=True)
-    
-    st.markdown("---")
-    st.markdown(f"""
-    <div style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 16px; padding: 25px; text-align: center;">
-        <p style="color: white; font-size: 14px; margin: 0;">TOTAL RAB KESELURUHAN</p>
-        <h2 style="color: white; margin: 10px 0 0 0; font-size: 42px;">Rp {total_biaya:,.0f}</h2>
-        <p style="color: #d1fae5; margin-top: 10px; font-size: 12px;">*Termasuk Material + Upah + Overhead</p>
-    </div>
-    """, unsafe_allow_html=True)
+)
 
-with tabs[2]:
-    st.markdown("### 📄 Export Data")
-    st.info("📊 Export data dalam format CSV atau JSON untuk dokumentasi")
-    
-    # Data export lengkap
-    export_full_data = {
+st.markdown('<div class="custom-divider"></div>', unsafe_allow_html=True)
+
+# ==================== TOTAL KESELURUHAN ====================
+st.markdown("### 💰 Ringkasan Total Material & Biaya")
+
+col1, col2, col3, col4, col5 = st.columns(5)
+
+with col1:
+    st.metric("Total Semen", f"{total_semen} sak")
+with col2:
+    st.metric("Total Pasir", f"{total_pasir:.2f} m³")
+with col3:
+    st.metric("Total Split", f"{total_split:.2f} m³")
+with col4:
+    st.metric("Total Besi", f"{total_besi:.1f} kg")
+with col5:
+    st.metric("Tenaga Kerja", f"{tukang} Tukang + {kenek} Kenek")
+
+st.markdown("---")
+
+# Grand Total
+st.markdown(f"""
+<div style="background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%); border-radius: 16px; padding: 25px; text-align: center; margin-top: 20px;">
+    <p style="color: #dbeafe; font-size: 14px; margin: 0;">GRAND TOTAL RENCANA ANGGARAN BIAYA (RAB)</p>
+    <h2 style="color: white; margin: 10px 0 0 0; font-size: 42px;">Rp {total_biaya:,.0f}</h2>
+    <p style="color: #bfdbfe; margin-top: 10px; font-size: 12px;">*Sudah termasuk material, upah tukang, dan overhead</p>
+</div>
+""", unsafe_allow_html=True)
+
+# ==================== EXPORT DATA ====================
+st.markdown("---")
+st.markdown("### 📄 Export Data")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    # Export CSV
+    csv = df_komponen.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="📥 Download CSV (20 Komponen)",
+        data=csv,
+        file_name=f"arki_estimator_20_komponen_{datetime.now().strftime('%Y%m%d')}.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+
+with col2:
+    # Export JSON
+    export_json = {
         'timestamp': datetime.now().isoformat(),
         'input_parameter': {
             'panjang': panjang, 'lebar': lebar, 'tinggi': tinggi, 'lantai': lantai,
-            'kamar': kamar, 'km': km, 'ruang_tamu': ruang_tamu, 'dapur': dapur, 'garasi': garasi,
-            'jenis_atap': jenis_atap, 'rangka_atap': rangka_atap, 'jenis_bata': jenis_bata,
-            'ukuran_besi': ukuran_besi, 'upah_tukang': upah_tukang, 'upah_kenek': upah_kenek,
-            'kanopi': kanopi, 'pagar': pagar
+            'kamar': kamar, 'km': km, 'garasi': garasi, 'kanopi': kanopi, 'pagar': pagar
         },
-        'hasil_perhitungan': {
-            'luas_bangunan': luas_bangunan,
-            'luas_total': luas_total,
+        'total': {
+            'total_biaya': total_biaya,
             'total_semen': total_semen,
             'total_pasir': total_pasir,
             'total_split': total_split,
             'total_besi': total_besi,
-            'estimasi_hari': hari,
-            'total_biaya': total_biaya
+            'estimasi_hari': hari
         },
-        'detail_20_komponen': {
-            'pondasi': komponen_pondasi,
-            'sloof': komponen_sloof,
-            'ring_balok': komponen_ring,
-            'total_struktur': komponen_struktur,
-            'bekisting': komponen_bekisting,
-            'cakar_ayam': cakar,
-            'dinding': dinding,
-            'atap': {'luas': luas_atap, 'genteng': genteng},
-            'rangka_atap': komponen_rangka,
-            'plafon': komponen_plafon,
-            'keramik': komponen_keramik,
-            'listrik': komponen_listrik,
-            'kamar_mandi': komponen_km,
-            'dapur': komponen_dapur,
-            'cat': komponen_cat,
-            'tenaga_kerja': komponen_tenaga
-        }
+        'detail_20_komponen': komponen_data
     }
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        # Export CSV
-        df_export = pd.DataFrame([{
-            'Tanggal': datetime.now().strftime('%Y-%m-%d'),
-            'Panjang': panjang, 'Lebar': lebar, 'Tinggi': tinggi, 'Lantai': lantai,
-            'Luas_Bangunan': luas_bangunan, 'Total_Semen': total_semen,
-            'Total_Pasir': total_pasir, 'Total_Split': total_split,
-            'Total_Besi': total_besi, 'Hari_Kerja': hari,
-            'Total_Biaya': total_biaya
-        }])
-        
-        csv = df_export.to_csv(index=False).encode('utf-8')
-        st.download_button(
-            label="📥 Download CSV",
-            data=csv,
-            file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.csv",
-            mime="text/csv",
-            use_container_width=True
-        )
-    
-    with col2:
-        # Export JSON
-        json_str = json.dumps(export_full_data, indent=2, default=str)
-        st.download_button(
-            label="📥 Download JSON (Lengkap)",
-            data=json_str,
-            file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.json",
-            mime="application/json",
-            use_container_width=True
-        )
-    
-    st.markdown("---")
-    st.markdown("### 📋 Preview Data Export (JSON)")
-    st.json(export_full_data, expanded=False)
+    json_str = json.dumps(export_json, indent=2, default=str)
+    st.download_button(
+        label="📥 Download JSON (Lengkap)",
+        data=json_str,
+        file_name=f"arki_estimator_{datetime.now().strftime('%Y%m%d')}.json",
+        mime="application/json",
+        use_container_width=True
+    )
 
 # Footer
 st.markdown("""
-<div style="text-align: center; margin-top: 50px; padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
-    <p style="color: #64748b;">🏗️ ARKI ESTIMATOR PRO | Full 20 Komponen Logic | © 2024</p>
-    <p style="color: #475569; font-size: 12px;">*Harga bersifat estimasi, dapat berubah sesuai daerah dan waktu</p>
+<div style="text-align: center; margin-top: 40px; padding: 20px;">
+    <hr style="border-color: #e2e8f0;">
+    <p style="color: #94a3b8;">🏗️ ARKI ESTIMATOR PRO | 20 Komponen Lengkap | © 2024</p>
+    <p style="color: #cbd5e1; font-size: 12px;">*Harga bersifat estimasi, dapat berubah sesuai daerah dan waktu</p>
 </div>
 """, unsafe_allow_html=True)
